@@ -141,7 +141,7 @@ For many reasons, I was looking for genomes of anhydrobiotic nematodes when I fo
   - The MaSuRCA assembly has higher N50 stats (271kb!) and the longest scaffold is a amazing 4,595,260 (4Mbp!)
 - Validation of contamination
   - In our previous genome assembly attempts with small metazoans, we see alot of non-metazoan contaminations.
-  - Blobtools 
+  - We have used Blobtools (https://blobtools.readme.io/docs) to validate contamination in Tardigrade genomes
     ```
       /path/to/diamond blastx --query CA/final.genome.scf.fasta --db /path/to/uniprot_ref_proteomes.fasta.dmnd --outfmt 6 --sensitive --max-target-seqs 1 --evalue 1e-25 -c 1 -b 72.0 -o final.genome.scf.fasta.diamond.uniprotRefProt.1e-25
       /path/to/blobtools/blobtools taxify -f final.genome.scf.fasta.diamond.uniprotRefProt.1e-25 -m /path/to/uniprot_reference_proteomes/uniprot_ref_proteomes.taxids -s 0 -t 2
@@ -149,6 +149,14 @@ For many reasons, I was looking for genomes of anhydrobiotic nematodes when I fo
       /path/to/blobtools/blobtools view -i blob.blobDB.json -o blob
       /path/to/blobtools/blobtools plot -i blob.blobDB.json -o plot
     ```
-
+  - We see low non-metazoan contigs, so we presumed that there were low levels of contamination.
+- Validation by coverage
+  - Qualimap
+- Validation by BUSCO v4
 
 ## Transcriptome assembly
+
+
+## Gene predicition by Braker2
+  - Eukaryotic gene prediction is harder compaired to those of bacterial genomes
+  - We have sucess using Braker in previous studies
