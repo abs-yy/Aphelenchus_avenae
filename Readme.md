@@ -174,12 +174,12 @@ For many reasons, I was looking for genomes of anhydrobiotic nematodes when I fo
 - Validation by coverage
   - Use Qualimap v2.2 for visualization
     ```
-      bwa index final.genome.scf.fasta
-      bwa mem final.genome.scf.fasta SRR1180010.1.sra_1.fastq SRR1180010.1.sra_2.fastq -t 24  > SRR1180010.mem.sam
-      samtools view -@ 24 -bS SRR1180010.mem.sam > SRR1180010.mem.bam
-      samtools sort -@ 24 SRR1180010.mem.bam SRR1180010.mem.sorted
-      samtools index SRR1180010.mem.sorted.bam
-      /home/yuki.yoshida/bin/qualimap_v2.2/qualimap bamqc -bam SRR1180010.mem.sorted.bam -outformat pdf --java-mem-size=16G
+      /path/to/bwa index final.genome.scf.fasta
+      /path/to/bwa mem final.genome.scf.fasta SRR1180010.1.sra_1.fastq SRR1180010.1.sra_2.fastq -t 24  > SRR1180010.mem.sam
+      /path/to/samtools view -@ 24 -bS SRR1180010.mem.sam > SRR1180010.mem.bam
+      /path/to/samtools sort -@ 24 SRR1180010.mem.bam SRR1180010.mem.sorted
+      /path/to/samtools index SRR1180010.mem.sorted.bam
+      /path/to/qualimap_v2.2/qualimap bamqc -bam SRR1180010.mem.sorted.bam -outformat pdf --java-mem-size=16G
     ```
 - Validation by BUSCO v4
   - We use BUSCO for genome completeness validation
@@ -221,9 +221,9 @@ For many reasons, I was looking for genomes of anhydrobiotic nematodes when I fo
 - Repeat Masking
   - I use RepeatModeller to collect novel repeats and RepeatMasker to identify them in the genome
     ```
-     % BuildDatabase -name AAVEN -engine ncbi final.genome.scf.fasta
-     % RepeatModeler -engine ncbi -pa 32 -database AAVEN >& repeatmodeller.out
-     % RepeatMasker  -parallel 32 -lib AAVEN-families.fa -xsmall -gff final.genome.scf.fasta
+     % /path/to/BuildDatabase -name AAVEN -engine ncbi final.genome.scf.fasta
+     % /path/to/RepeatModeler -engine ncbi -pa 32 -database AAVEN >& repeatmodeller.out
+     % /path/to/RepeatMasker  -parallel 32 -lib AAVEN-families.fa -xsmall -gff final.genome.scf.fasta
      % cat final.genome.scf.fasta.tbl
         ==================================================
         file name: final.genome.scf.fasta
