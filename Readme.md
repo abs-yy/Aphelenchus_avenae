@@ -162,6 +162,34 @@ For many reasons, I was looking for genomes of anhydrobiotic nematodes when I fo
       /home/yuki.yoshida/bin/qualimap_v2.2/qualimap bamqc -bam SRR1180010.mem.sorted.bam -outformat pdf --java-mem-size=16G
     ```
 - Validation by BUSCO v4
+  - We use BUSCO for genome completeness validation
+  - BUSCO just had a major update (to v4), and there are inconsistancies with v3 results. Do not compare v3 results with v4
+    ```
+      # SPADES
+      % cat scaffolds.fasta_eukaryota/short_summary.specific.eukaryota_odb10.scaffolds.fasta_eukaryota.txt
+      	***** Results: *****
+
+        C:69.0%[S:65.9%,D:3.1%],F:19.6%,M:11.4%,n:255
+        176	Complete BUSCOs (C)
+        168	Complete and single-copy BUSCOs (S)
+        8	Complete and duplicated BUSCOs (D)
+        50	Fragmented BUSCOs (F)
+        29	Missing BUSCOs (M)
+        255	Total BUSCO groups searched
+
+      # MaSuRCA
+      % cat final.genome.scf.fasta_eukaryote_genome/short_summary.specific.eukaryota_odb10.final.genome.scf.fasta_eukaryote_genome.txt
+    	***** Results: *****
+      C:80.4%[S:59.2%,D:21.2%],F:8.6%,M:11.0%,n:255
+      205	Complete BUSCOs (C)
+      151	Complete and single-copy BUSCOs (S)
+      54	Complete and duplicated BUSCOs (D)
+      22	Fragmented BUSCOs (F)
+      28	Missing BUSCOs (M)
+      255	Total BUSCO groups searched
+    ```
+  - The MaSuRCA assembly has higher completeness scores (little higher Duplicated BUSCOs,,,)
+  
 
 ## Transcriptome assembly
 - I had a old version of Trinity installed
