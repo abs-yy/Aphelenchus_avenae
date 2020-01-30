@@ -218,5 +218,82 @@ For many reasons, I was looking for genomes of anhydrobiotic nematodes when I fo
 ```
 
 ## Gene predicition by Braker2
+- Repeat Masking
+  - I use RepeatModeller to collect novel repeats and RepeatMasker to identify them in the genome
+    ```
+     % BuildDatabase -name AAVEN -engine ncbi final.genome.scf.fasta
+     % RepeatModeler -engine ncbi -pa 32 -database AAVEN >& repeatmodeller.out
+     % RepeatMasker  -parallel 32 -lib AAVEN-families.fa -xsmall -gff final.genome.scf.fasta
+     % cat final.genome.scf.fasta.tbl
+        ==================================================
+        file name: final.genome.scf.fasta
+        sequences:         53991
+        total length:  307037338 bp  (277883612 bp excl N/X-runs)
+        GC level:         49.87 %
+        bases masked:   62903610 bp ( 20.49 %)
+        ==================================================
+                       number of      length   percentage
+                       elements*    occupied  of sequence
+        --------------------------------------------------
+        SINEs:              375        46481 bp    0.02 %
+              ALUs            0            0 bp    0.00 %
+              MIRs            0            0 bp    0.00 %
+
+        LINEs:             4698      1588333 bp    0.52 %
+              LINE1          94        20448 bp    0.01 %
+              LINE2         997       145490 bp    0.05 %
+              L3/CR1       1634       586757 bp    0.19 %
+
+        LTR elements:     21109      6712412 bp    2.19 %
+              ERVL            0            0 bp    0.00 %
+              ERVL-MaLRs      0            0 bp    0.00 %
+              ERV_classI      0            0 bp    0.00 %
+              ERV_classII     0            0 bp    0.00 %
+
+        DNA elements:     43480      7071661 bp    2.30 %
+             hAT-Charlie    398        74792 bp    0.02 %
+             TcMar-Tigger     0            0 bp    0.00 %
+
+        Unclassified:    266233     41151563 bp   13.40 %
+
+        Total interspersed repeats: 56570450 bp   18.42 %
+
+
+        Small RNA:           54         3198 bp    0.00 %
+
+        Satellites:       11945      1385475 bp    0.45 %
+        Simple repeats:   65011      5609881 bp    1.83 %
+        Low complexity:    2715       145524 bp    0.05 %
+        ==================================================
+
+        * most repeats fragmented by insertions or deletions
+          have been counted as one element
+
+
+        The query species was assumed to be homo
+        RepeatMasker Combined Database: Dfam_Consensus-20170127, RepBase-20170127
+
+        run with rmblastn version 2.2.27+
+        The query was compared to classified sequences in "AAVEN-families.fa"
+     ```
+- Gene prediction
   - Eukaryotic gene prediction is harder compaired to those of bacterial genomes
   - We have sucess using Braker in previous studies
+    ```
+    perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1174913_1.fastq SRR1174913_2.fastq SRR1174913
+    perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175676_1.fastq SRR1175676_2.fastq SRR1175676
+    perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175692_1.fastq SRR1175692_2.fastq SRR1175692
+    perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175695_1.fastq SRR1175695_2.fastq SRR1175695
+    perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175696_1.fastq SRR1175696_2.fastq SRR1175696
+    perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175697_1.fastq SRR1175697_2.fastq SRR1175697
+    perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175706_1.fastq SRR1175706_2.fastq SRR1175706
+    perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175707_1.fastq SRR1175707_2.fastq SRR1175707
+    perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175708_1.fastq SRR1175708_2.fastq SRR1175708
+    perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175729_1.fastq SRR1175729_2.fastq SRR1175729
+    perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175731_1.fastq SRR1175731_2.fastq SRR1175731
+    perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175736_1.fastq SRR1175736_2.fastq SRR1175736
+    perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175737_1.fastq SRR1175737_2.fastq SRR1175737
+    perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175739_1.fastq SRR1175739_2.fastq SRR1175739
+    perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175740_1.fastq SRR1175740_2.fastq SRR1175740
+    ```
+  
