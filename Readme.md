@@ -4,15 +4,35 @@ For many reasons, I was looking for genomes of anhydrobiotic nematodes when I fo
 # Method
 ## Data Acquisition
 - Sequence data list
-  - DNA-Seq data
-    - 
-  - RNA-Seq data
-    - SRR1175676, SRR1175692, SRR1175695, SRR1175696, SRR1175697, SRR1175706, SRR1175707, SRR1175708, SRR1175729, SRR1175731, SRR1175736, SRR1175737, SRR1175739, SRR1175740, SRR1174913
+  - DNA-Seq data from [PRJNA236621](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA236621)
+    - Illumina short insert DNA-Seq data
+      - SRX478896: Illumina reads (100bp paired)
+      - SRX476023: Illumina reads (75bp paired x 2 libraries)
+    - Mate pair
+      - SRX476036: 454 8 kb paired end reads
+      - SRX476031: 454 20 kb paired end reads
+  - RNA-Seq data from [PRJNA236622](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA236622)
+    - SRR1174913	mRNA-RH100-1
+    - SRR1175676	mRNA-RH100-2
+    - SRR1175692	mRNA-RH100-3
+    - SRR1175695	mRNA-RH97-1
+    - SRR1175696	mRNA-RH97-2
+    - SRR1175697	mRNA-RH97-3
+    - SRR1175706	mRNA-RH85-1
+    - SRR1175707	mRNA-RH85-2
+    - SRR1175708	mRNA-RH85-3
+    - SRR1175729	mRNA-RH40-1
+    - SRR1175731	mRNA-RH40-2
+    - SRR1175736	mRNA-RH40-3
+    - SRR1175737	mRNA-RH0-1
+    - SRR1175739	mRNA-RH0-2
+    - SRR1175740	mRNA-RH0-3
 - Data Acquisition
-  - sratools prefetch
-  - sratools fastq-dump
+  - Downloading (sratools v2.9.2)
+    - prefetch (download .sra)
+    - fastq-dump (sra -> fastq, --split-files --defline-seq '@$sn[_$rn]/$ri', --defline-seq is required for Trinity)
   - Data filtering
-    - There were reads that pairs could not be found in several DNA-Seq data, so I used fastq-pair to filter the data
+    - There were DNA-Seq reads that pairs could not be found in several DNA-Seq data, so I used fastq-pair to filter the data
       -  https://github.com/linsalrob/fastq-pair/blob/master/CITATION.md
       - /path/to/fastq-pair/build/fastq_pair SRX476031.sra_2.fastq SRX476031.sra_4.fastq
   
