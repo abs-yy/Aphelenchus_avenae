@@ -149,7 +149,7 @@ For many reasons, I was looking for genomes of anhydrobiotic nematodes when I fo
       /path/to/blobtools/blobtools view -i blob.blobDB.json -o blob
       /path/to/blobtools/blobtools plot -i blob.blobDB.json -o plot
     ```
-!(Figure)[plot.blob.blobDB.json.bestsum.phylum.p8.span.100.blobplot.bam0.png]
+![Figure]([plot.blob.blobDB.json.bestsum.phylum.p8.span.100.blobplot.bam0.png)
   - We see low non-metazoan contigs, so we presumed that there were low levels of contamination.
 - Validation by coverage
   - Qualimap
