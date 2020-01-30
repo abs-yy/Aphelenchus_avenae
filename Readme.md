@@ -152,11 +152,22 @@ For many reasons, I was looking for genomes of anhydrobiotic nematodes when I fo
 ![Figure](images/plot.blob.blobDB.json.bestsum.phylum.p8.span.100.blobplot.bam0.png)
   - We see low non-metazoan contigs, so we presumed that there were low levels of contamination.
 - Validation by coverage
-  - Qualimap
+  - Use Qualimap v2.2 for visualization
+    ```
+      bwa index final.genome.scf.fasta
+      bwa mem final.genome.scf.fasta SRR1180010.1.sra_1.fastq SRR1180010.1.sra_2.fastq -t 24  > SRR1180010.mem.sam
+      samtools view -@ 24 -bS SRR1180010.mem.sam > SRR1180010.mem.bam
+      samtools sort -@ 24 SRR1180010.mem.bam SRR1180010.mem.sorted
+      samtools index SRR1180010.mem.sorted.bam
+      /home/yuki.yoshida/bin/qualimap_v2.2/qualimap bamqc -bam SRR1180010.mem.sorted.bam -outformat pdf --java-mem-size=16G
+    ```
 - Validation by BUSCO v4
 
 ## Transcriptome assembly
-
+- I had a old version of Trinity installed
+```
+/path/to/trinityrnaseq-Trinity-v2.4.0/Trinity  --seqType fq --max_memory 200G --left SRR1174913_1.fastq,SRR1175676_1.fastq,SRR1175692_1.fastq,SRR1175695_1.fastq,SRR1175696_1.fastq,SRR1175697_1.fastq,SRR1175706_1.fastq,SRR1175707_1.fastq,SRR1175708_1.fastq,SRR1175729_1.fastq,SRR1175731_1.fastq,SRR1175736_1.fastq,SRR1175737_1.fastq,SRR1175739_1.fastq,SRR1175740_1.fastq --right SRR1174913_2.fastq,SRR1175676_2.fastq,SRR1175692_2.fastq,SRR1175695_2.fastq,SRR1175696_2.fastq,SRR1175697_2.fastq,SRR1175706_2.fastq,SRR1175707_2.fastq,SRR1175708_2.fastq,SRR1175729_2.fastq,SRR1175731_2.fastq,SRR1175736_2.fastq,SRR1175737_2.fastq,SRR1175739_2.fastq,SRR1175740_2.fastq --CPU 32
+```
 
 ## Gene predicition by Braker2
   - Eukaryotic gene prediction is harder compaired to those of bacterial genomes
