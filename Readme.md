@@ -1,5 +1,6 @@
 # Introduction
-- For many reasons, I was looking for genomes of anhydrobiotic nematodes when I found sequencing data (DNA and RNA) of Aphelenchus avenae. There were no genome/transcriptome assemblies and papers assosiated with this study, so I presumed that 1) no one is analyzing the data, or 2) The paper is under submission (seq.ed at 2014, is taking a very long time..). I wanted to see gene conservations, so I tried to assemble the genome with recent methods.
+- I currently work on Tardigrade anhydrobiosis, and was looking for anhydrobiosis expression data of other organisms when I came across Aphelenchus avenae.
+- There were no genome/transcriptome assemblies and papers assosiated with this study, so I presumed that 1) no one is analyzing the data, or 2) The paper is under submission (sequenced at 2014, is taking a very long time..). I wanted to see gene conservations, so I tried to assemble the genome with recent methods.
 - I do not intend to write a paper on this data. It is soarly for my own practice in Bioinformatics.
 - The C-value of A. avenae is [0.04pg](http://www.genomesize.com/result_species.php?id=5818), corresponding to 39.12Mbp.
 
