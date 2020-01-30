@@ -33,7 +33,15 @@ For many reasons, I was looking for genomes of anhydrobiotic nematodes when I fo
     --mp-2 3 SRR1176816.sra_4.fastq.paired.fq \
     -o Aphelenchus_avenae_spades -t 64
 ```
-- MaSuRCA
+- MaSuRCA v3.3.5
+  - Commands
+    ```
+    % /path/to/MaSuRCA-3.3.5/bin/masurca -g 
+    # edit configureation file as shown below
+    % /path/to/MaSuRCA-3.3.5/bin/masurca config.txt
+    % ./assemble.sh
+    ```
+  - Config.file
 ```
 # example configuration file
 
