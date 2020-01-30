@@ -1,5 +1,6 @@
 # Introduction
-For many reasons, I was looking for genomes of anhydrobiotic nematodes when I found sequencing data (DNA and RNA) of Aphelenchus avenae. There were genome/transcriptome assemblies and no papers assosiated with this study.
+- For many reasons, I was looking for genomes of anhydrobiotic nematodes when I found sequencing data (DNA and RNA) of Aphelenchus avenae. There were no genome/transcriptome assemblies and papers assosiated with this study, so I presumed that 1) no one is analyzing the data, or 2) The paper is under submission (seq.ed at 2014, is taking a very long time..). I wanted to see gene conservations, so I tried to assemble the genome with recent methods.
+- I do not intend to write a paper on this data.
 
 # Method
 ## Data Acquisition
