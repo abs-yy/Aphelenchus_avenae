@@ -30,7 +30,7 @@ For many reasons, I was looking for genomes of anhydrobiotic nematodes when I fo
 - Data Acquisition
   - Downloading (sratools v2.9.2)
     - prefetch (download .sra)
-    - fastq-dump (sra -> fastq, --split-files --defline-seq '@$sn[_$rn]/$ri', --defline-seq is required for Trinity)
+    - fastq-dump (sra -> fastq, `--split-files --defline-seq '@$sn[_$rn]/$ri'`, --defline-seq is required for Trinity)
   - Data filtering
     - There were DNA-Seq reads that pairs could not be found in several DNA-Seq data, so I used fastq-pair to filter the data
       -  https://github.com/linsalrob/fastq-pair/blob/master/CITATION.md
