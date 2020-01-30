@@ -116,5 +116,39 @@ For many reasons, I was looking for genomes of anhydrobiotic nematodes when I fo
     FLYE_ASSEMBLY=0
     END
     ```
+- Comparison of assemblies
+  ```
+  bin/fasta_statistics_file.pl Aphelenchus_avenae/scaffolds.fasta
+    Loaded 890216 FASTA sequences.
+      Stats for Aphelenchus_avenaed/scaffolds.fasta :
+        Scaffold number           890216
+        Total scaffold length     340407135
+        Average scaffold length   382
+        Longest scaffold          78370
+        Shortest scaffold length  56
+        N50                       2104
+        
+  bin/fasta_statistics_file.pl CA/final.genome.scf.fasta
+    Loaded 53991 FASTA sequences.
+      Stats for CA/final.genome.scf.fasta :
+        Scaffold number           53991
+        Total scaffold length     307037338
+        Average scaffold length   5686
+        Longest scaffold          4595260
+        Shortest scaffold length  183
+        N50                       271596
+  ```
+  - The MaSuRCA assembly has higher N50 stats (271kb!) and the longest scaffold is a amazing 4,595,260 (4Mbp!)
+- Validation of contamination
+  - In our previous genome assembly attempts with small metazoans, we see alot of non-metazoan contaminations.
+  - Blobtools 
+    ```
+      /path/to/diamond blastx --query CA/final.genome.scf.fasta --db /path/to/uniprot_ref_proteomes.fasta.dmnd --outfmt 6 --sensitive --max-target-seqs 1 --evalue 1e-25 -c 1 -b 72.0 -o final.genome.scf.fasta.diamond.uniprotRefProt.1e-25
+      /path/to/blobtools/blobtools taxify -f final.genome.scf.fasta.diamond.uniprotRefProt.1e-25 -m /path/to/uniprot_reference_proteomes/uniprot_ref_proteomes.taxids -s 0 -t 2
+      /path/to/blobtools/blobtools  create -i final.genome.scf.fasta -b SRR1180010.mem.sorted.bam -t final.genome.scf.fasta.diamond.uniprotRefProt.1e-25.taxified.out -o blob --nodes ~/bin/blobtools/data/nodesDB.txt
+      /path/to/blobtools/blobtools view -i blob.blobDB.json -o blob
+      /path/to/blobtools/blobtools plot -i blob.blobDB.json -o plot
+    ```
+
 
 ## Transcriptome assembly
