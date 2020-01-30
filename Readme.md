@@ -42,7 +42,7 @@ For many reasons, I was looking for genomes of anhydrobiotic nematodes when I fo
     % ./assemble.sh
     ```
   - Config.file
-  ```
+    ```
     # example configuration file
 
     # DATA is specified as type {PE,JUMP,OTHER,PACBIO} and 5 fields:
