@@ -38,7 +38,52 @@
     - There were DNA-Seq reads that pairs could not be found in several DNA-Seq data, so I used fastq-pair to filter the data
       -  https://github.com/linsalrob/fastq-pair/blob/master/CITATION.md
       - /path/to/fastq-pair/build/fastq_pair SRX476031.sra_2.fastq SRX476031.sra_4.fastq
-  
+## Softwares
+- Just a list of softwares that I use several times.
+```
+% augustus --version
+AUGUSTUS (3.3.3) is a gene prediction tool
+written by M. Stanke, O. Keller, S. König, L. Gerischer and L. Romoth.
+
+% bamtools --version
+bamtools 2.4.1
+Part of BamTools API and toolkit
+Primary authors: Derek Barnett, Erik Garrison, Michael Stromberg
+(c) 2009-2012 Marth Lab, Biology Dept., Boston College
+
+% samtools --version
+samtools 1.4
+Using htslib 1.4
+
+% bwa
+Program: bwa (alignment via Burrows-Wheeler transformation)
+Version: 0.7.12-r1039
+Contact: Heng Li <lh3@sanger.ac.uk>
+Copyright (C) 2017 Genome Research Ltd.
+
+% perl --version
+This is perl, v5.10.1 (*) built for x86_64-linux-thread-multi
+
+% G
+	     __/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/
+
+                   G-language  Genome Analysis Environment v.1.9.1
+
+
+                             http://www.g-language.org/
+
+              Please cite:
+                 Arakawa K. et al. (2003) Bioinformatics.
+                 Arakawa K. et al. (2006) Journal of Pestice Science.
+	               Arakawa K. et al. (2008) Genes, Genomes and Genomics.
+
+              License: GNU General Public License
+              Copyright (C) 2001-2016 G-language Project
+              Institute for Advanced Biosciences, Keio University, JAPAN
+
+	     __/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/
+```
+
 ## Genome assembly
 - There are many genome assemblers available, I used two famous softwares to test if there are any differences.
 - SPADES v3.14.0
