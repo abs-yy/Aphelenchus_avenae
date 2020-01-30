@@ -281,7 +281,11 @@
      ```
 - Gene prediction
   - Eukaryotic gene prediction is harder compaired to those of bacterial genomes
-  - We have sucess using Braker in previous studies
+    - We have sucess using Braker in previous studies
+    - Installing BRAKER2 is hard, Augustus and BAMtools is the hard part.
+    - If possible, why not use a Docker instance?
+      - I currently am unavailable to use Docker, so I went the hard way.
+  - Map the RNA-Seq data to the masked genome
     ```
     perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1174913_1.fastq SRR1174913_2.fastq SRR1174913
     perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175676_1.fastq SRR1175676_2.fastq SRR1175676
@@ -299,4 +303,25 @@
     perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175739_1.fastq SRR1175739_2.fastq SRR1175739
     perl bin/hisat2-paired.pl final.genome.scf.fasta.masked SRR1175740_1.fastq SRR1175740_2.fastq SRR1175740
     ```
-  
+    - Mapping ratio calculated by samtools flagstat looks okay
+      ```
+      SRR1174913.hisat2.sorted.bam.stat	48672813 + 0 mapped (85.93% : N/A)
+      SRR1175676.hisat2.sorted.bam.stat	25659013 + 0 mapped (84.81% : N/A)
+      SRR1175692.hisat2.sorted.bam.stat	56558774 + 0 mapped (88.37% : N/A)
+      SRR1175695.hisat2.sorted.bam.stat	31251985 + 0 mapped (87.78% : N/A)
+      SRR1175696.hisat2.sorted.bam.stat	27284672 + 0 mapped (87.48% : N/A)
+      SRR1175697.hisat2.sorted.bam.stat	26735574 + 0 mapped (87.60% : N/A)
+      SRR1175706.hisat2.sorted.bam.stat	27981543 + 0 mapped (87.23% : N/A)
+      SRR1175707.hisat2.sorted.bam.stat	26940582 + 0 mapped (87.08% : N/A)
+      SRR1175708.hisat2.sorted.bam.stat	22291325 + 0 mapped (85.57% : N/A)
+      SRR1175729.hisat2.sorted.bam.stat	36819726 + 0 mapped (86.45% : N/A)
+      SRR1175731.hisat2.sorted.bam.stat	25206074 + 0 mapped (87.65% : N/A)
+      SRR1175736.hisat2.sorted.bam.stat	28421079 + 0 mapped (87.20% : N/A)
+      SRR1175737.hisat2.sorted.bam.stat	28659310 + 0 mapped (86.74% : N/A)
+      SRR1175739.hisat2.sorted.bam.stat	22026597 + 0 mapped (87.24% : N/A)
+      SRR1175740.hisat2.sorted.bam.stat	22762473 + 0 mapped (87.27% : N/A)
+      ```
+  - Run Braker2
+    ```
+    /home/yuki.yoshida/bin/BRAKER-2.1.4/scripts/braker.pl --genome final.genome.scf.fasta.masked --species AAVEN_3 --softmasking --gff3 --cores 32 --bam SRR1174913.hisat2.sorted.bam --bam SRR1175676.hisat2.sorted.bam --bam SRR1175692.hisat2.sorted.bam --bam SRR1175695.hisat2.sorted.bam --bam SRR1175696.hisat2.sorted.bam --bam SRR1175697.hisat2.sorted.bam --bam SRR1175706.hisat2.sorted.bam --bam SRR1175707.hisat2.sorted.bam --bam SRR1175708.hisat2.sorted.bam --bam SRR1175729.hisat2.sorted.bam --bam SRR1175731.hisat2.sorted.bam --bam SRR1175736.hisat2.sorted.bam --bam SRR1175737.hisat2.sorted.bam --bam SRR1175739.hisat2.sorted.bam --bam SRR1175740.hisat2.sorted.bam --verbosity=4  --useexisting
+    ```
