@@ -265,6 +265,22 @@ This is perl, v5.10.1 (*) built for x86_64-linux-thread-multi
 ```
 /path/to/trinityrnaseq-Trinity-v2.4.0/Trinity  --seqType fq --max_memory 200G --left SRR1174913_1.fastq,SRR1175676_1.fastq,SRR1175692_1.fastq,SRR1175695_1.fastq,SRR1175696_1.fastq,SRR1175697_1.fastq,SRR1175706_1.fastq,SRR1175707_1.fastq,SRR1175708_1.fastq,SRR1175729_1.fastq,SRR1175731_1.fastq,SRR1175736_1.fastq,SRR1175737_1.fastq,SRR1175739_1.fastq,SRR1175740_1.fastq --right SRR1174913_2.fastq,SRR1175676_2.fastq,SRR1175692_2.fastq,SRR1175695_2.fastq,SRR1175696_2.fastq,SRR1175697_2.fastq,SRR1175706_2.fastq,SRR1175707_2.fastq,SRR1175708_2.fastq,SRR1175729_2.fastq,SRR1175731_2.fastq,SRR1175736_2.fastq,SRR1175737_2.fastq,SRR1175739_2.fastq,SRR1175740_2.fastq --CPU 32
 ```
+- But I also tried assembly with the newest Trinity
+```
+/path/to/trinityrnaseq-v2.9.1/Trinity   --seqType fq --max_memory 200G --include_supertranscripts --CPU 64 --left SRR1174913_1.fastq,SRR1175676_1.fastq,SRR1175692_1.fastq,SRR1175695_1.fastq,SRR1175696_1.fastq,SRR1175697_1.fastq,SRR1175706_1.fastq,SRR1175707_1.fastq,SRR1175708_1.fastq,SRR1175729_1.fastq,SRR1175731_1.fastq,SRR1175736_1.fastq,SRR1175737_1.fastq,SRR1175739_1.fastq,SRR1175740_1.fastq --right SRR1174913_2.fastq,SRR1175676_2.fastq,SRR1175692_2.fastq,SRR1175695_2.fastq,SRR1175696_2.fastq,SRR1175697_2.fastq,SRR1175706_2.fastq,SRR1175707_2.fastq,SRR1175708_2.fastq,SRR1175729_2.fastq,SRR1175731_2.fastq,SRR1175736_2.fastq,SRR1175737_2.fastq,SRR1175739_2.fastq,SRR1175740_2.fastq
+```
+- Of course it takes so much time, how about a faster assembler (Bridger)??
+  - Too much reads for one assembly (983,115,852), so I subsampled to 10M reads for \_1 and \_2.
+```
+cat *_1.fastq > left.fastq
+cat *_2.fastq > right.fastq
+seqtk sample -s100 left.fastq > left.sub.fastq
+seqtk sample -s100 right.fastq > right.sub.fastq
+
+/path/to/Bridger_r2014-12-01/Bridger.pl --seqType fq --left left.sub.fq --right right.sub.fq --CPU 64
+```
+
+- Comparison of the three assemblies
 
 ## Gene predicition by Braker2
 - Repeat Masking
