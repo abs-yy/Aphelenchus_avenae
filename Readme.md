@@ -55,6 +55,15 @@ Primary authors: Derek Barnett, Erik Garrison, Michael Stromberg
 samtools 1.4
 Using htslib 1.4
 
+% bowtie2 --version
+/home/yuki.yoshida/bin/bowtie2-2.3.5.1-linux-x86_64/bowtie2-align-s version 2.3.5.1
+
+% blat
+blat - Standalone BLAT v. 36x4 fast sequence search command line tool
+
+% blastall
+blastall 2.2.22   arguments:blastall
+
 % bwa
 Program: bwa (alignment via Burrows-Wheeler transformation)
 Version: 0.7.12-r1039
@@ -279,27 +288,43 @@ This is perl, v5.10.1 (*) built for x86_64-linux-thread-multi
   - Let's check the transcriptome to see if it's really not there.
 
 ## Transcriptome assembly using data from a different lab
-- I had a old version of Trinity installed
-```
-/path/to/trinityrnaseq-Trinity-v2.4.0/Trinity  --seqType fq --max_memory 200G --left SRR1174913_1.fastq,SRR1175676_1.fastq,SRR1175692_1.fastq,SRR1175695_1.fastq,SRR1175696_1.fastq,SRR1175697_1.fastq,SRR1175706_1.fastq,SRR1175707_1.fastq,SRR1175708_1.fastq,SRR1175729_1.fastq,SRR1175731_1.fastq,SRR1175736_1.fastq,SRR1175737_1.fastq,SRR1175739_1.fastq,SRR1175740_1.fastq --right SRR1174913_2.fastq,SRR1175676_2.fastq,SRR1175692_2.fastq,SRR1175695_2.fastq,SRR1175696_2.fastq,SRR1175697_2.fastq,SRR1175706_2.fastq,SRR1175707_2.fastq,SRR1175708_2.fastq,SRR1175729_2.fastq,SRR1175731_2.fastq,SRR1175736_2.fastq,SRR1175737_2.fastq,SRR1175739_2.fastq,SRR1175740_2.fastq --CPU 32
-```
-- But I also tried assembly with the newest Trinity
-```
-/path/to/trinityrnaseq-v2.9.1/Trinity   --seqType fq --max_memory 200G --include_supertranscripts --CPU 64 --left SRR1174913_1.fastq,SRR1175676_1.fastq,SRR1175692_1.fastq,SRR1175695_1.fastq,SRR1175696_1.fastq,SRR1175697_1.fastq,SRR1175706_1.fastq,SRR1175707_1.fastq,SRR1175708_1.fastq,SRR1175729_1.fastq,SRR1175731_1.fastq,SRR1175736_1.fastq,SRR1175737_1.fastq,SRR1175739_1.fastq,SRR1175740_1.fastq --right SRR1174913_2.fastq,SRR1175676_2.fastq,SRR1175692_2.fastq,SRR1175695_2.fastq,SRR1175696_2.fastq,SRR1175697_2.fastq,SRR1175706_2.fastq,SRR1175707_2.fastq,SRR1175708_2.fastq,SRR1175729_2.fastq,SRR1175731_2.fastq,SRR1175736_2.fastq,SRR1175737_2.fastq,SRR1175739_2.fastq,SRR1175740_2.fastq
-```
-- Of course it takes so much time, how about a faster assembler (Bridger)??
+- I had a old version of [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) installed v2.4.0
+  ```
+  /path/to/trinityrnaseq-Trinity-v2.4.0/Trinity  --seqType fq --max_memory 200G --left SRR1174913_1.fastq,SRR1175676_1.fastq,SRR1175692_1.fastq,SRR1175695_1.fastq,SRR1175696_1.fastq,SRR1175697_1.fastq,SRR1175706_1.fastq,SRR1175707_1.fastq,SRR1175708_1.fastq,SRR1175729_1.fastq,SRR1175731_1.fastq,SRR1175736_1.fastq,SRR1175737_1.fastq,SRR1175739_1.fastq,SRR1175740_1.fastq --right SRR1174913_2.fastq,SRR1175676_2.fastq,SRR1175692_2.fastq,SRR1175695_2.fastq,SRR1175696_2.fastq,SRR1175697_2.fastq,SRR1175706_2.fastq,SRR1175707_2.fastq,SRR1175708_2.fastq,SRR1175729_2.fastq,SRR1175731_2.fastq,SRR1175736_2.fastq,SRR1175737_2.fastq,SRR1175739_2.fastq,SRR1175740_2.fastq --CPU 32
+  ```
+- But I also tried assembly with the newest [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) v2.9.1
+  ```
+  /path/to/trinityrnaseq-v2.9.1/Trinity   --seqType fq --max_memory 200G --include_supertranscripts --CPU 64 --left SRR1174913_1.fastq,SRR1175676_1.fastq,SRR1175692_1.fastq,SRR1175695_1.fastq,SRR1175696_1.fastq,SRR1175697_1.fastq,SRR1175706_1.fastq,SRR1175707_1.fastq,SRR1175708_1.fastq,SRR1175729_1.fastq,SRR1175731_1.fastq,SRR1175736_1.fastq,SRR1175737_1.fastq,SRR1175739_1.fastq,SRR1175740_1.fastq --right SRR1174913_2.fastq,SRR1175676_2.fastq,SRR1175692_2.fastq,SRR1175695_2.fastq,SRR1175696_2.fastq,SRR1175697_2.fastq,SRR1175706_2.fastq,SRR1175707_2.fastq,SRR1175708_2.fastq,SRR1175729_2.fastq,SRR1175731_2.fastq,SRR1175736_2.fastq,SRR1175737_2.fastq,SRR1175739_2.fastq,SRR1175740_2.fastq
+  ```
+- Of course it takes so much time, how about a faster assembler [Bridger](https://github.com/fmaguire/Bridger_Assembler)??
   - Too much reads for one assembly (983,115,852), so I subsampled to 10M reads for \_1 and \_2.
-```
-cat *_1.fastq > left.fastq
-cat *_2.fastq > right.fastq
-seqtk sample -s100 left.fastq > left.sub.fastq
-seqtk sample -s100 right.fastq > right.sub.fastq
+    ```
+    cat *_1.fastq > left.fastq
+    cat *_2.fastq > right.fastq
+    seqtk sample -s100 left.fastq > left.sub.fastq
+    seqtk sample -s100 right.fastq > right.sub.fastq
 
-/path/to/Bridger_r2014-12-01/Bridger.pl --seqType fq --left left.sub.fq --right right.sub.fq --CPU 64
-```
-
+    /path/to/Bridger_r2014-12-01/Bridger.pl --seqType fq --left left.sub.fq --right right.sub.fq --CPU 64
+    ```
+  - I wanted to construct [Supertranscript](https://github.com/trinityrnaseq/trinityrnaseq/wiki/SuperTranscripts), so I used [Lace](https://github.com/Oshlack/Lace/wiki/Installation)
+    ```
+    wget https://github.com/Oshlack/Lace/releases/download/v1.13/Lace-1.13.tar.gz
+    grep ">" Bridger.fasta | cut -d " " -f 1 | perl -ne 'chomp; s/>//; $a=(split /\_/)[0]; print $_."\t".$a."\n"' > Bridger.fasta.i2g
+    python Lace-1.13/Lace.py --core 32 -t  Bridger.fasta Bridger.fasta.i2g
+    ```
+    - Bridger : C:92.9%[S:92.5%,D:0.4%],F:3.9%,M:3.2%,n:255
 - Comparison of the three assemblies
-
+  - Time
+    - Bridger assembly : about 2h
+    - Trinity v2.9 :  
+    - Trinity v2.4 : 
+  - [BUSCO v3](https://busco-archive.ezlab.org/v3/)
+    - Bridger assembly : C:96.7%[S:35.0%,D:61.7%],F:2.6%,M:0.7%,n:303
+    - Trinity v2.4 : 
+    - Trinity v2.9 : 
+  - [BUSCO v4](https://busco.ezlab.org/busco_userguide.html)
+    - 
+    
 ## Gene predicition by Braker2
 - Repeat Masking
   - I use RepeatModeller to collect novel repeats and RepeatMasker to identify them in the genome
