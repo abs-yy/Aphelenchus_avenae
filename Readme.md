@@ -259,8 +259,26 @@ This is perl, v5.10.1 (*) built for x86_64-linux-thread-multi
     ```
   - The MaSuRCA assembly has higher completeness scores (little higher Duplicated BUSCOs,,,)
   
+- Looking for a gene that I wanted to find
+  - Anhydrin-1 from A. avenae (https://www.ebi.ac.uk/ena/data/view/AAQ20894)
+    ```
+    % cat anhydrin.fna
+    >ENA|AAQ20894|AAQ20894.1 Aphelenchus avenae anhydrin-1 : Location:1..261
+    ATGCCACCGATCGCTACCCGTCGGGGACAGTACGAGCCGAAAGTACAGCAAGCAAAGCTG
+    TCGCCGGACACGATTCCTCTCAATCCTGCCGATAAGACCAAGGATCCCCTGGCTCGAGCG
+    GACTCTCTTCATCATCACGTCGAAAGTGACTCGCAGGAAGACGACAAGGCGGCGGAAGAA
+    CCCCCTCTGAGCCGTAAGAGATGGCAGAACCGCACGTTCCGGCGCAAGGGACGACGTCAG
+    GCGCCGTACAAGCATAAATAA
+    % formatdb -i final.genome.scf.fasta -p F
+    % blastall -p blastn -i anhydrin.fna -d final.genome.scf.fasta -m 8 -a 32 -e 1e-15 -o anhydrin.fna.blastn.AAVENgenome.1e-15
+    # empty output
+    ```
+  - Anhydrin-1 is missing in the genome....?
+    1. The gene is missing in this genome
+    1. The sequenced strain is not the same one as used in the study that identified Anhydrin-1
+  - Let's check the transcriptome to see if it's really not there.
 
-## Transcriptome assembly
+## Transcriptome assembly using data from a different lab
 - I had a old version of Trinity installed
 ```
 /path/to/trinityrnaseq-Trinity-v2.4.0/Trinity  --seqType fq --max_memory 200G --left SRR1174913_1.fastq,SRR1175676_1.fastq,SRR1175692_1.fastq,SRR1175695_1.fastq,SRR1175696_1.fastq,SRR1175697_1.fastq,SRR1175706_1.fastq,SRR1175707_1.fastq,SRR1175708_1.fastq,SRR1175729_1.fastq,SRR1175731_1.fastq,SRR1175736_1.fastq,SRR1175737_1.fastq,SRR1175739_1.fastq,SRR1175740_1.fastq --right SRR1174913_2.fastq,SRR1175676_2.fastq,SRR1175692_2.fastq,SRR1175695_2.fastq,SRR1175696_2.fastq,SRR1175697_2.fastq,SRR1175706_2.fastq,SRR1175707_2.fastq,SRR1175708_2.fastq,SRR1175729_2.fastq,SRR1175731_2.fastq,SRR1175736_2.fastq,SRR1175737_2.fastq,SRR1175739_2.fastq,SRR1175740_2.fastq --CPU 32
