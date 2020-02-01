@@ -312,18 +312,14 @@ This is perl, v5.10.1 (*) built for x86_64-linux-thread-multi
     grep ">" Bridger.fasta | cut -d " " -f 1 | perl -ne 'chomp; s/>//; $a=(split /\_/)[0]; print $_."\t".$a."\n"' > Bridger.fasta.i2g
     python Lace-1.13/Lace.py --core 32 -t  Bridger.fasta Bridger.fasta.i2g
     ```
-    - Bridger : C:92.9%[S:92.5%,D:0.4%],F:3.9%,M:3.2%,n:255
+    - busco v4 stats : C:92.9%[S:92.5%,D:0.4%],F:3.9%,M:3.2%,n:255
 - Comparison of the three assemblies
-  - Time
-    - Bridger assembly : about 2h
-    - Trinity v2.9 :  
-    - Trinity v2.4 : 
   - [BUSCO v3](https://busco-archive.ezlab.org/v3/)
     - Bridger assembly : C:96.7%[S:35.0%,D:61.7%],F:2.6%,M:0.7%,n:303
     - Trinity v2.4 : 
     - Trinity v2.9 : 
   - [BUSCO v4](https://busco.ezlab.org/busco_userguide.html)
-    - 
+    - Bridger assembly : C:94.1%[S:33.7%,D:60.4%],F:2.7%,M:3.2%,n:255
     
 ## Gene predicition by Braker2
 - Repeat Masking
