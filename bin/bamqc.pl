@@ -1,5 +1,6 @@
-use G;
+#!/usr/bin/env perl
 use strict;
+use warnings;
 
 my $ref = shift;
 my $read1 = shift;
