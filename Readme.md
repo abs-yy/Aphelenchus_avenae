@@ -334,6 +334,7 @@ This is perl, v5.10.1 (*) built for x86_64-linux-thread-multi
     ```
     % kallisto index -i Bridger.fasta.kallisto Bridger.fasta
     % for i in `\ls  | grep fastq | cut -d "_" -f 1 | uniq` ; do; echo $i;  kallisto quant -i Bridger.fasta.kallisto -o ${i}_kallisto --bias -b 100 -t 64 ${i}_1.fastq ${i}_2.fastq; done;
+    % perl bin/parse_kallisto_from_dir.pl . > kallisto.txt
     
     ### THIS CORESPONDS TO THE FOLLOWING COMMANDS;
     kallisto quant -i Bridger.fasta.kallisto -o SRR1174913_kallisto --bias -b 100 -t 64 SRR1174913_1.fastq SRR1174913_2.fastq
@@ -355,6 +356,8 @@ This is perl, v5.10.1 (*) built for x86_64-linux-thread-multi
   - And for DE analysis, I use BWA MEM to map and DESeq2 for DE analysis
     ```
     % for i in `\ls  | grep fastq | cut -d "_" -f 1 | uniq`; do; echo $i; perl bin/bamqc.pl Bridger.fasta ${i}_1.fastq ${i}_2.fastq bwa_${i}; done;
+    % perl bin/parse_bwa_counts_from_dir.pl . > count_bwa.txt
+    % Rscript bin/run_DESeq2_on_bwa_count_matrix.R count_bwa.txt > deseq2.txt
     
     ### THIS CORRESPONDS TO THE FOLLOWING COMMANDS;
     perl bin/bamqc.pl Bridger.fasta SRR1174913_1.fastq SRR1174913_2.fastq bwa_SRR1174913
