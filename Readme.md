@@ -320,6 +320,26 @@ This is perl, v5.10.1 (*) built for x86_64-linux-thread-multi
     - Trinity v2.9 : 
   - [BUSCO v4](https://busco.ezlab.org/busco_userguide.html)
     - Bridger assembly : C:94.1%[S:33.7%,D:60.4%],F:2.7%,M:3.2%,n:255
+- Looking for anhydrin-1
+  - BLASTn search
+    - Looks like anhydrin is contained in this assembly
+    ```
+    % blatall -p blastn -i anhydrin.fna -d Bridger.fasta -m 8 -a 32 -e 1e-30
+    ENA|AAQ20894|AAQ20894.1	comp79_seq0	100.00	261	0	0	1	261	579	839	1e-146	 517
+    ENA|AAQ20894|AAQ20894.1	comp79_seq1	100.00	196	0	0	66	261	710	905	8e-108	 389
+    ENA|AAQ20894|AAQ20894.1	comp79_seq1	100.00	67	0	0	1	67	579	645	7e-31	 133
+    ```
+- Gene expression analysis
+  - I regulary use (Kallisto)[https://pachterlab.github.io/kallisto/] for expression quantification
+    ```
+    % kallisto index -i Bridger.fasta.kallisto Bridger.fasta
+    % for i in `\ls  | grep fastq | cut -d "_" -f 1 | uniq` ; do; echo $i;  kallisto quant -i Bridger.fasta.kallisto -o ${i}_kallisto --bias -b 100 -t 64 ${i}_1.fastq ${i}_2.fastq; done;
+    ```
+  - And for DE analysis, I use BWA MEM to map and DESeq2 for DE analysis
+    ```
+    % for i in `\ls  | grep fastq | cut -d "_" -f 1 | uniq`; do; echo $i; perl bin/bamqc.pl Bridger.fasta ${i}_1.fastq ${i}_2.fastq bwa_${i}; done;
+    
+    ```
     
 ## Gene predicition by Braker2
 - Repeat Masking
