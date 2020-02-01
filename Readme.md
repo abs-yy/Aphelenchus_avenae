@@ -287,7 +287,7 @@ This is perl, v5.10.1 (*) built for x86_64-linux-thread-multi
     1. The sequenced strain is not the same one as used in the study that identified Anhydrin-1
   - Let's check the transcriptome to see if it's really not there.
 
-## Transcriptome assembly using data from a different lab
+## Transcriptome assembly using data from the same lab that sequenced the DNA-Seq data
 - I had a old version of [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) installed v2.4.0
   ```
   /path/to/trinityrnaseq-Trinity-v2.4.0/Trinity  --seqType fq --max_memory 200G --left SRR1174913_1.fastq,SRR1175676_1.fastq,SRR1175692_1.fastq,SRR1175695_1.fastq,SRR1175696_1.fastq,SRR1175697_1.fastq,SRR1175706_1.fastq,SRR1175707_1.fastq,SRR1175708_1.fastq,SRR1175729_1.fastq,SRR1175731_1.fastq,SRR1175736_1.fastq,SRR1175737_1.fastq,SRR1175739_1.fastq,SRR1175740_1.fastq --right SRR1174913_2.fastq,SRR1175676_2.fastq,SRR1175692_2.fastq,SRR1175695_2.fastq,SRR1175696_2.fastq,SRR1175697_2.fastq,SRR1175706_2.fastq,SRR1175707_2.fastq,SRR1175708_2.fastq,SRR1175729_2.fastq,SRR1175731_2.fastq,SRR1175736_2.fastq,SRR1175737_2.fastq,SRR1175739_2.fastq,SRR1175740_2.fastq --CPU 32
