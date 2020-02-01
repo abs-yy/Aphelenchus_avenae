@@ -334,11 +334,44 @@ This is perl, v5.10.1 (*) built for x86_64-linux-thread-multi
     ```
     % kallisto index -i Bridger.fasta.kallisto Bridger.fasta
     % for i in `\ls  | grep fastq | cut -d "_" -f 1 | uniq` ; do; echo $i;  kallisto quant -i Bridger.fasta.kallisto -o ${i}_kallisto --bias -b 100 -t 64 ${i}_1.fastq ${i}_2.fastq; done;
+    
+    ### THIS CORESPONDS TO THE FOLLOWING COMMANDS;
+    kallisto quant -i Bridger.fasta.kallisto -o SRR1174913_kallisto --bias -b 100 -t 64 SRR1174913_1.fastq SRR1174913_2.fastq
+    kallisto quant -i Bridger.fasta.kallisto -o SRR1175676_kallisto --bias -b 100 -t 64 SRR1175676_1.fastq SRR1175676_2.fastq
+    kallisto quant -i Bridger.fasta.kallisto -o SRR1175692_kallisto --bias -b 100 -t 64 SRR1175692_1.fastq SRR1175692_2.fastq
+    kallisto quant -i Bridger.fasta.kallisto -o SRR1175695_kallisto --bias -b 100 -t 64 SRR1175695_1.fastq SRR1175695_2.fastq
+    kallisto quant -i Bridger.fasta.kallisto -o SRR1175696_kallisto --bias -b 100 -t 64 SRR1175696_1.fastq SRR1175696_2.fastq
+    kallisto quant -i Bridger.fasta.kallisto -o SRR1175697_kallisto --bias -b 100 -t 64 SRR1175697_1.fastq SRR1175697_2.fastq
+    kallisto quant -i Bridger.fasta.kallisto -o SRR1175706_kallisto --bias -b 100 -t 64 SRR1175706_1.fastq SRR1175706_2.fastq
+    kallisto quant -i Bridger.fasta.kallisto -o SRR1175707_kallisto --bias -b 100 -t 64 SRR1175707_1.fastq SRR1175707_2.fastq
+    kallisto quant -i Bridger.fasta.kallisto -o SRR1175708_kallisto --bias -b 100 -t 64 SRR1175708_1.fastq SRR1175708_2.fastq
+    kallisto quant -i Bridger.fasta.kallisto -o SRR1175729_kallisto --bias -b 100 -t 64 SRR1175729_1.fastq SRR1175729_2.fastq
+    kallisto quant -i Bridger.fasta.kallisto -o SRR1175731_kallisto --bias -b 100 -t 64 SRR1175731_1.fastq SRR1175731_2.fastq
+    kallisto quant -i Bridger.fasta.kallisto -o SRR1175736_kallisto --bias -b 100 -t 64 SRR1175736_1.fastq SRR1175736_2.fastq
+    kallisto quant -i Bridger.fasta.kallisto -o SRR1175737_kallisto --bias -b 100 -t 64 SRR1175737_1.fastq SRR1175737_2.fastq
+    kallisto quant -i Bridger.fasta.kallisto -o SRR1175739_kallisto --bias -b 100 -t 64 SRR1175739_1.fastq SRR1175739_2.fastq
+    kallisto quant -i Bridger.fasta.kallisto -o SRR1175740_kallisto --bias -b 100 -t 64 SRR1175740_1.fastq SRR1175740_2.fastq
     ```
   - And for DE analysis, I use BWA MEM to map and DESeq2 for DE analysis
     ```
     % for i in `\ls  | grep fastq | cut -d "_" -f 1 | uniq`; do; echo $i; perl bin/bamqc.pl Bridger.fasta ${i}_1.fastq ${i}_2.fastq bwa_${i}; done;
     
+    ### THIS CORRESPONDS TO THE FOLLOWING COMMANDS;
+    perl bin/bamqc.pl Bridger.fasta SRR1174913_1.fastq SRR1174913_2.fastq bwa_SRR1174913
+    perl bin/bamqc.pl Bridger.fasta SRR1175676_1.fastq SRR1175676_2.fastq bwa_SRR1175676
+    perl bin/bamqc.pl Bridger.fasta SRR1175692_1.fastq SRR1175692_2.fastq bwa_SRR1175692
+    perl bin/bamqc.pl Bridger.fasta SRR1175695_1.fastq SRR1175695_2.fastq bwa_SRR1175695
+    perl bin/bamqc.pl Bridger.fasta SRR1175696_1.fastq SRR1175696_2.fastq bwa_SRR1175696
+    perl bin/bamqc.pl Bridger.fasta SRR1175697_1.fastq SRR1175697_2.fastq bwa_SRR1175697
+    perl bin/bamqc.pl Bridger.fasta SRR1175706_1.fastq SRR1175706_2.fastq bwa_SRR1175706
+    perl bin/bamqc.pl Bridger.fasta SRR1175707_1.fastq SRR1175707_2.fastq bwa_SRR1175707
+    perl bin/bamqc.pl Bridger.fasta SRR1175708_1.fastq SRR1175708_2.fastq bwa_SRR1175708
+    perl bin/bamqc.pl Bridger.fasta SRR1175729_1.fastq SRR1175729_2.fastq bwa_SRR1175729
+    perl bin/bamqc.pl Bridger.fasta SRR1175731_1.fastq SRR1175731_2.fastq bwa_SRR1175731
+    perl bin/bamqc.pl Bridger.fasta SRR1175736_1.fastq SRR1175736_2.fastq bwa_SRR1175736
+    perl bin/bamqc.pl Bridger.fasta SRR1175737_1.fastq SRR1175737_2.fastq bwa_SRR1175737
+    perl bin/bamqc.pl Bridger.fasta SRR1175739_1.fastq SRR1175739_2.fastq bwa_SRR1175739
+    perl bin/bamqc.pl Bridger.fasta SRR1175740_1.fastq SRR1175740_2.fastq bwa_SRR1175740
     ```
     
 ## Gene predicition by Braker2
