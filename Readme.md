@@ -9,27 +9,33 @@
 - Sequence data list
   - DNA-Seq data from [PRJNA236621](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA236621)
     - Illumina short insert DNA-Seq data
-      - SRX478896: Illumina reads (100bp paired)
-      - SRX476023: Illumina reads (75bp paired x 2 libraries)
+      ```
+      SRX478896: Illumina reads (100bp paired)
+      SRX476023: Illumina reads (75bp paired x 2 libraries)
+      ```
     - Mate pair
-      - SRX476036: 454 8 kb paired end reads
-      - SRX476031: 454 20 kb paired end reads
+      ```
+      SRX476036: 454 8 kb paired end reads
+      SRX476031: 454 20 kb paired end reads
+      ```
   - RNA-Seq data from [PRJNA236622](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA236622)
-    - SRR1174913	mRNA-RH100-1
-    - SRR1175676	mRNA-RH100-2
-    - SRR1175692	mRNA-RH100-3
-    - SRR1175695	mRNA-RH97-1
-    - SRR1175696	mRNA-RH97-2
-    - SRR1175697	mRNA-RH97-3
-    - SRR1175706	mRNA-RH85-1
-    - SRR1175707	mRNA-RH85-2
-    - SRR1175708	mRNA-RH85-3
-    - SRR1175729	mRNA-RH40-1
-    - SRR1175731	mRNA-RH40-2
-    - SRR1175736	mRNA-RH40-3
-    - SRR1175737	mRNA-RH0-1
-    - SRR1175739	mRNA-RH0-2
-    - SRR1175740	mRNA-RH0-3
+    ```
+    SRR1174913	mRNA-RH100-1
+    SRR1175676	mRNA-RH100-2
+    SRR1175692	mRNA-RH100-3
+    SRR1175695	mRNA-RH97-1
+    SRR1175696	mRNA-RH97-2
+    SRR1175697	mRNA-RH97-3
+    SRR1175706	mRNA-RH85-1
+    SRR1175707	mRNA-RH85-2
+    SRR1175708	mRNA-RH85-3
+    SRR1175729	mRNA-RH40-1
+    SRR1175731	mRNA-RH40-2
+    SRR1175736	mRNA-RH40-3
+    SRR1175737	mRNA-RH0-1
+    SRR1175739	mRNA-RH0-2
+    SRR1175740	mRNA-RH0-3
+    ```
 - Data Acquisition
   - Downloading (sratools v2.9.2)
     - prefetch (download .sra)
@@ -40,58 +46,58 @@
       - /path/to/fastq-pair/build/fastq_pair SRX476031.sra_2.fastq SRX476031.sra_4.fastq
 ## Softwares
 - Just a list of softwares that I use several times.
-```
-% augustus --version
-AUGUSTUS (3.3.3) is a gene prediction tool
-written by M. Stanke, O. Keller, S. König, L. Gerischer and L. Romoth.
+	```
+	% augustus --version
+	AUGUSTUS (3.3.3) is a gene prediction tool
+	written by M. Stanke, O. Keller, S. König, L. Gerischer and L. Romoth.
 
-% bamtools --version
-bamtools 2.4.1
-Part of BamTools API and toolkit
-Primary authors: Derek Barnett, Erik Garrison, Michael Stromberg
-(c) 2009-2012 Marth Lab, Biology Dept., Boston College
+	% bamtools --version
+	bamtools 2.4.1
+	Part of BamTools API and toolkit
+	Primary authors: Derek Barnett, Erik Garrison, Michael Stromberg
+	(c) 2009-2012 Marth Lab, Biology Dept., Boston College
 
-% samtools --version
-samtools 1.4
-Using htslib 1.4
+	% samtools --version
+	samtools 1.4
+	Using htslib 1.4
 
-% bowtie2 --version
-/home/yuki.yoshida/bin/bowtie2-2.3.5.1-linux-x86_64/bowtie2-align-s version 2.3.5.1
+	% bowtie2 --version
+	/home/yuki.yoshida/bin/bowtie2-2.3.5.1-linux-x86_64/bowtie2-align-s version 2.3.5.1
 
-% blat
-blat - Standalone BLAT v. 36x4 fast sequence search command line tool
+	% blat
+	blat - Standalone BLAT v. 36x4 fast sequence search command line tool
 
-% blastall
-blastall 2.2.22   arguments:blastall
+	% blastall
+	blastall 2.2.22   arguments:blastall
 
-% bwa
-Program: bwa (alignment via Burrows-Wheeler transformation)
-Version: 0.7.12-r1039
-Contact: Heng Li <lh3@sanger.ac.uk>
-Copyright (C) 2017 Genome Research Ltd.
+	% bwa
+	Program: bwa (alignment via Burrows-Wheeler transformation)
+	Version: 0.7.12-r1039
+	Contact: Heng Li <lh3@sanger.ac.uk>
+	Copyright (C) 2017 Genome Research Ltd.
 
-% perl --version
-This is perl, v5.10.1 (*) built for x86_64-linux-thread-multi
+	% perl --version
+	This is perl, v5.10.1 (*) built for x86_64-linux-thread-multi
 
-% G
-	     __/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/
+	% G
+		     __/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/
 
-                   G-language  Genome Analysis Environment v.1.9.1
+			   G-language  Genome Analysis Environment v.1.9.1
 
 
-                             http://www.g-language.org/
+				     http://www.g-language.org/
 
-              Please cite:
-                 Arakawa K. et al. (2003) Bioinformatics.
-                 Arakawa K. et al. (2006) Journal of Pestice Science.
-	               Arakawa K. et al. (2008) Genes, Genomes and Genomics.
+		      Please cite:
+			 Arakawa K. et al. (2003) Bioinformatics.
+			 Arakawa K. et al. (2006) Journal of Pestice Science.
+			       Arakawa K. et al. (2008) Genes, Genomes and Genomics.
 
-              License: GNU General Public License
-              Copyright (C) 2001-2016 G-language Project
-              Institute for Advanced Biosciences, Keio University, JAPAN
+		      License: GNU General Public License
+		      Copyright (C) 2001-2016 G-language Project
+		      Institute for Advanced Biosciences, Keio University, JAPAN
 
-	     __/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/
-```
+		     __/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/
+	```
 
 ## Genome assembly
 - There are many genome assemblers available, I used two famous softwares to test if there are any differences.
