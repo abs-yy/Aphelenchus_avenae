@@ -116,6 +116,50 @@
     --mp-2 3 SRR1176816.sra_4.fastq.paired.fq \
     -o Aphelenchus_avenae_spades -t 64
   ```
+- Platanus v1.2.4
+  ```
+	% platanus assemble -o platanus -f ../SRR1179837.sra_1.fastq.paired.fq ../SRR1179837.sra_2.fastq.paired.fq ../SRR1180010.1.sra_1.fastq.paired.fq ../SRR1180010.1.sra_2.fastq.paired.fq -t 64 -m 200
+	Platanus version: 1.2.4
+	platanus assemble -o platanus -f ../SRR1179837.sra_1.fastq.paired.fq ../SRR1179837.sra_2.fastq.paired.fq ../SRR1180010.1.sra_1.fastq.paired.fq ../SRR1180010.1.sra_2.fastq.paired.fq -t 64 -m 200
+
+	K = 32, saving kmers from reads...
+	AVE_READ_LEN=82.5636
+
+	KMER_EXTENSION:
+	K=32, KMER_COVERAGE=97.1503 (>= 17), COVERAGE_CUTOFF=17
+	K=42, KMER_COVERAGE=78.3094, COVERAGE_CUTOFF=17, PROB_SPLIT=10e-15.9546
+	K=52, KMER_COVERAGE=59.4686, COVERAGE_CUTOFF=16, PROB_SPLIT=10e-10.1645
+	K=62, KMER_COVERAGE=40.6277, COVERAGE_CUTOFF=6, PROB_SPLIT=10e-10.5826
+	K=68, KMER_COVERAGE=29.3231, COVERAGE_CUTOFF=2, PROB_SPLIT=10e-10.408
+	K=69, KMER_COVERAGE=27.4391, COVERAGE_CUTOFF=2, PROB_SPLIT=10e-10.1617
+	loading kmers...
+	connecting kmers...
+	removing branches...
+	BRANCH_DELETE_THRESHOLD=0.5
+	NUM_CUT=62528
+	NUM_CUT=318
+	NUM_CUT=0
+	TOTAL_NUM_CUT=62846
+	mapping reads on de Bruijn Graph nodes...
+	TOTAL_MAPPED_READS=460029628
+	TOTAL_UNMAPPED_READS=101267368
+	TOTAL_SHORT_READS(<32)=27828
+	NUM_DELETE_NODE(reads are unmapped)=97982
+	NUM_CUT_NODE=23080
+	extracting reads (containing kmer used in contig assemble)...
+	K = 42, loading kmers from contigs...
+	K = 42, saving additional kmers(not found in contigs) from reads...
+	COVERAGE_CUTOFF = 17
+	loading kmers...
+	connecting kmers...
+	removing branches...
+	BRANCH_DELETE_THRESHOLD=0.5
+	NUM_CUT=46626
+	NUM_CUT=132
+	NUM_CUT=0
+	TOTAL_NUM_CUT=46758
+	mapping reads on de Bruijn Graph nodes...
+    ```
 - MaSuRCA v3.3.5
   - Commands
     ```
