@@ -357,8 +357,7 @@ This is perl, v5.10.1 (*) built for x86_64-linux-thread-multi
     ```
     % for i in `\ls  | grep fastq | cut -d "_" -f 1 | uniq`; do; echo $i; perl bin/bamqc.pl Bridger.fasta ${i}_1.fastq ${i}_2.fastq bwa_${i}; done;
     % perl bin/parse_bwa_counts_from_dir.pl . > count_bwa.txt
-    % Rscript bin/run_DESeq2_on_bwa_count_matrix.R count_bwa.txt > deseq2.txt
-    
+
     ### THIS CORRESPONDS TO THE FOLLOWING COMMANDS;
     perl bin/bamqc.pl Bridger.fasta SRR1174913_1.fastq SRR1174913_2.fastq bwa_SRR1174913
     perl bin/bamqc.pl Bridger.fasta SRR1175676_1.fastq SRR1175676_2.fastq bwa_SRR1175676
@@ -375,6 +374,11 @@ This is perl, v5.10.1 (*) built for x86_64-linux-thread-multi
     perl bin/bamqc.pl Bridger.fasta SRR1175737_1.fastq SRR1175737_2.fastq bwa_SRR1175737
     perl bin/bamqc.pl Bridger.fasta SRR1175739_1.fastq SRR1175739_2.fastq bwa_SRR1175739
     perl bin/bamqc.pl Bridger.fasta SRR1175740_1.fastq SRR1175740_2.fastq bwa_SRR1175740
+    
+    # Run DEseq2
+    % Rscript bin/run_DESeq2_on_bwa_count_matrix.R count_bwa.txt > deseq2.txt
+    
+
     ```
     
 ## Gene predicition by Braker2
