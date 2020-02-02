@@ -159,6 +159,107 @@
 	NUM_CUT=0
 	TOTAL_NUM_CUT=46758
 	mapping reads on de Bruijn Graph nodes...
+	TOTAL_MAPPED_READS=458209228
+	TOTAL_UNMAPPED_READS=102927225
+	TOTAL_SHORT_READS(<42)=188371
+	NUM_DELETE_NODE(reads are unmapped)=38372
+	NUM_CUT_NODE=21643
+	extracting reads (containing kmer used in contig assemble)...
+	K = 52, loading kmers from contigs...
+	K = 52, saving additional kmers(not found in contigs) from reads...
+	COVERAGE_CUTOFF = 16
+	loading kmers...
+	connecting kmers...
+	removing branches...
+	BRANCH_DELETE_THRESHOLD=0.5
+	NUM_CUT=40013
+	NUM_CUT=131
+	NUM_CUT=0
+	TOTAL_NUM_CUT=40144
+	mapping reads on de Bruijn Graph nodes...
+	TOTAL_MAPPED_READS=454138847
+	TOTAL_UNMAPPED_READS=103737664
+	TOTAL_SHORT_READS(<52)=3448313
+	NUM_DELETE_NODE(reads are unmapped)=31167
+	NUM_CUT_NODE=25426
+	extracting reads (containing kmer used in contig assemble)...
+	K = 62, loading kmers from contigs...
+	K = 62, saving additional kmers(not found in contigs) from reads...
+	COVERAGE_CUTOFF = 6
+	loading kmers...
+	connecting kmers...
+	removing branches...
+	BRANCH_DELETE_THRESHOLD=0.5
+	NUM_CUT=104959
+	NUM_CUT=428
+	NUM_CUT=1
+	NUM_CUT=0
+	TOTAL_NUM_CUT=105388
+	mapping reads on de Bruijn Graph nodes...
+	TOTAL_MAPPED_READS=439238700
+	TOTAL_UNMAPPED_READS=97140281
+	TOTAL_SHORT_READS(<62)=24945843
+	NUM_DELETE_NODE(reads are unmapped)=85069
+	NUM_CUT_NODE=36030
+	extracting reads (containing kmer used in contig assemble)...
+	K = 68, loading kmers from contigs...
+	K = 68, saving additional kmers(not found in contigs) from reads...
+	COVERAGE_CUTOFF = 2
+	loading kmers...
+	connecting kmers...
+	removing branches...
+	BRANCH_DELETE_THRESHOLD=0.5
+	NUM_CUT=834346
+	NUM_CUT=3650
+	NUM_CUT=15
+	NUM_CUT=1
+	NUM_CUT=0
+	TOTAL_NUM_CUT=838012
+	mapping reads on de Bruijn Graph nodes...
+	TOTAL_MAPPED_READS=424276585
+	TOTAL_UNMAPPED_READS=91029898
+	TOTAL_SHORT_READS(<68)=46018341
+	NUM_DELETE_NODE(reads are unmapped)=223452
+	NUM_CUT_NODE=66553
+	extracting reads (containing kmer used in contig assemble)...
+	K = 69, loading kmers from contigs...
+	K = 69, saving additional kmers(not found in contigs) from reads...
+	COVERAGE_CUTOFF = 2
+	loading kmers...
+	connecting kmers...
+	removing branches...
+	BRANCH_DELETE_THRESHOLD=0.5
+	NUM_CUT=496004
+	NUM_CUT=1613
+	NUM_CUT=2
+	NUM_CUT=0
+	TOTAL_NUM_CUT=497619
+	LENGTH_CUTOFF = 138
+	COVERAGE_CUTOFF = 5
+	removing erroneous nodes...
+	NUM_REMOVED_NODES=349302
+	NUM_REMOVED_NODES=29032
+	NUM_REMOVED_NODES=76
+	NUM_REMOVED_NODES=0
+	TOTAL_NUM_REMOVED_NODES=378410
+	AVE_KMER_COV_REMOVING_BUBBLE=29.9513
+	removing bubbles...
+	BUBBLE_IDENTITY_THRESHOLD=0.1
+	NUM_REMOVED_BUBBLES=74590
+	NUM_REMOVED_BUBBLES=58
+	NUM_REMOVED_BUBBLES=0
+	TOTAL_NUM_REMOVED_BUBBLES=74648
+	mapping reads on de Bruijn Graph nodes...
+	TOTAL_MAPPED_READS=403859041
+	TOTAL_UNMAPPED_READS=107085522
+	TOTAL_SHORT_READS(<69)=50380261
+	NUM_DELETE_NODE(reads are unmapped)=5464
+	NUM_CUT_NODE=40534
+	assemble completed!
+
+	#### PROCESS INFORMATION ####
+	VmPeak:         133.393 GByte
+	VmHWM:           33.581 GByte
     ```
 - MaSuRCA v3.3.5
   - Commands
