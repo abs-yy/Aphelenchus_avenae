@@ -958,79 +958,118 @@
 
     /path/to/Bridger_r2014-12-01/Bridger.pl --seqType fq --left left.sub.fq --right right.sub.fq --CPU 64
     ```
-  - I wanted to construct [Supertranscript](https://github.com/trinityrnaseq/trinityrnaseq/wiki/SuperTranscripts), so I used [Lace](https://github.com/Oshlack/Lace/wiki/Installation)
-    ```
-    wget https://github.com/Oshlack/Lace/releases/download/v1.13/Lace-1.13.tar.gz
-    grep ">" Bridger.fasta | cut -d " " -f 1 | perl -ne 'chomp; s/>//; $a=(split /\_/)[0]; print $_."\t".$a."\n"' > Bridger.fasta.i2g
-    python Lace-1.13/Lace.py --core 32 -t  Bridger.fasta Bridger.fasta.i2g
-    ```
-    - busco v4 stats : C:92.9%[S:92.5%,D:0.4%],F:3.9%,M:3.2%,n:255
+    - I wanted to construct [Supertranscripts](https://github.com/trinityrnaseq/trinityrnaseq/wiki/SuperTranscripts), so I used [Lace](https://github.com/Oshlack/Lace/wiki/Installation)
+      ```
+      wget https://github.com/Oshlack/Lace/releases/download/v1.13/Lace-1.13.tar.gz
+      grep ">" Bridger.fasta | cut -d " " -f 1 | perl -ne 'chomp; s/>//; $a=(split /\_/)[0]; print $_."\t".$a."\n"' > Bridger.fasta.i2g
+      python Lace-1.13/Lace.py --core 32 -t  Bridger.fasta Bridger.fasta.i2g
+      ```
+      - busco v4 stats : C:92.9%[S:92.5%,D:0.4%],F:3.9%,M:3.2%,n:255 
+      - doesnt look that good. Throw this away
 - Comparison of the three assemblies
   - [BUSCO v3](https://busco-archive.ezlab.org/v3/)
     - Bridger assembly : C:96.7%[S:35.0%,D:61.7%],F:2.6%,M:0.7%,n:303
-    - Trinity v2.4 : 
-    - Trinity v2.9 : 
+    - Trinity v2.4     : C:99.1%[S:8.3%,D:90.8%],F:1.0%,M:-0.1%,n:303
+    - Trinity v2.9     : C:99.6%[S:10.2%,D:89.4%],F:0.0%,M:0.4%,n:303
   - [BUSCO v4](https://busco.ezlab.org/busco_userguide.html)
     - Bridger assembly : C:94.1%[S:33.7%,D:60.4%],F:2.7%,M:3.2%,n:255
+    - Trinity v2.4     : C:96.0%[S:7.8%,D:88.2%],F:1.2%,M:2.8%,n:255
+    - Trinity v2.9     : C:97.7%[S:11.8%,D:85.9%],F:0.4%,M:1.9%,n:255
+  - Looks like the Trinity v2.9 assembly is the best out of the three.
+    - How about the supertranscripts of this Trinty assembly? 
+      - Looks horrible, let's throw this away C:67.5%[S:66.7%,D:0.8%],F:21.6%,M:10.9%,n:255
 - Looking for anhydrin-1
   - BLASTn search
-    - Looks like anhydrin is contained in this assembly
+    - Looks like anhydrin is contained in this assembly, 2 different genes?
     ```
-    % blatall -p blastn -i anhydrin.fna -d Bridger.fasta -m 8 -a 32 -e 1e-30
-    ENA|AAQ20894|AAQ20894.1	comp79_seq0	100.00	261	0	0	1	261	579	839	1e-146	 517
-    ENA|AAQ20894|AAQ20894.1	comp79_seq1	100.00	196	0	0	66	261	710	905	8e-108	 389
-    ENA|AAQ20894|AAQ20894.1	comp79_seq1	100.00	67	0	0	1	67	579	645	7e-31	 133
+    	% blastall -p tblastx -i ../bridger_out_dir/tmp.fa -d Trinity.fasta -m 8 -a 32 -e 1e-15
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i2	100.00	87	0	0	1	261	394	134	1e-55	 215
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i2	100.00	86	0	0	259	2136	393	4e-55	 213
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i2	100.00	87	0	0	261	1134	394	1e-42	 171
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i2	100.00	86	0	0	2	259	393	136	2e-42	 171
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i2	100.00	46	0	0	140	3255	392	5e-33	 105
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i2	100.00	20	0	0	260	201	135	194	5e-33	78.0
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i2	100.00	33	0	0	3	101	392	294	3e-31	78.0
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i2	100.00	32	0	0	165	260	230	135	3e-31	75.8
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i1	100.00	65	0	0	259	65	136	330	4e-54	 171
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i1	95.45	22	1	0	68	3393	458	4e-54	 162
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i1	100.00	65	0	0	67	261	328	134	4e-51	 162
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i1	100.00	22	0	0	2	67	459	394	4e-51	 118
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i1	100.00	65	0	0	261	67	134	328	2e-37	 118
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i1	100.00	22	0	0	66	1395	460	2e-37	 118
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i1	100.00	65	0	0	65	259	330	136	3e-37	 118
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i1	100.00	22	0	0	1	66	460	395	3e-37	75.8
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i1	100.00	32	0	0	165	260	230	135	6e-28	75.8
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i1	100.00	22	0	0	3	68	458	393	6e-28	53.8
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i1	85.71	14	2	0	60	101	335	294	6e-28	53.8
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i1	100.00	20	0	0	260	201	135	194	1e-25	53.8
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i1	92.86	28	2	0	140	57	255	338	1e-25	50.6
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN47292_c0_g1_i1	100.00	22	0	0	67	2394	459	1e-25	48.3
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN115053_c0_g1_i1	93.51	77	5	0	259	29	47	277	1e-44	 178
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN115053_c0_g1_i1	89.74	78	8	0	28	261	278	45	2e-43	 174
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN115053_c0_g1_i1	93.51	77	5	0	29	259	277	47	3e-32	 137
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN115053_c0_g1_i1	94.87	78	4	0	261	28	45	278	9e-32	 135
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN115053_c0_g1_i1	89.47	38	4	0	140	27	166	279	3e-23	73.9
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN115053_c0_g1_i1	90.00	20	2	0	260	201	46	105	3e-23	62.9
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN115053_c0_g1_i1	90.32	31	3	0	168	260	138	46	2e-20	62.9
+	ENA|AAQ20894|AAQ20894.1	TRINITY_DN115053_c0_g1_i1	92.00	25	2	0	27	101	279	205	2e-20	51.9
     ```
 - Gene expression analysis
   - I regulary use (Kallisto)[https://pachterlab.github.io/kallisto/] for expression quantification
     ```
-    % kallisto index -i Bridger.fasta.kallisto Bridger.fasta
-    % for i in `\ls  | grep fastq | cut -d "_" -f 1 | uniq` ; do; echo $i;  kallisto quant -i Bridger.fasta.kallisto -o ${i}_kallisto --bias -b 100 -t 64 ${i}_1.fastq ${i}_2.fastq; done;
+    % kallisto index -i Trinity.fasta.kallisto Trinity.fasta
+    % for i in `\ls  | grep fastq | cut -d "_" -f 1 | uniq` ; do; echo $i;  kallisto quant -i Trinity.fasta.kallisto -o ${i}_kallisto --bias -b 100 -t 64 ${i}_1.fastq ${i}_2.fastq; done;
     % perl bin/parse_kallisto_from_dir.pl . > kallisto.txt
     
     ### THIS CORESPONDS TO THE FOLLOWING COMMANDS;
-    kallisto quant -i Bridger.fasta.kallisto -o SRR1174913_kallisto --bias -b 100 -t 64 SRR1174913_1.fastq SRR1174913_2.fastq
-    kallisto quant -i Bridger.fasta.kallisto -o SRR1175676_kallisto --bias -b 100 -t 64 SRR1175676_1.fastq SRR1175676_2.fastq
-    kallisto quant -i Bridger.fasta.kallisto -o SRR1175692_kallisto --bias -b 100 -t 64 SRR1175692_1.fastq SRR1175692_2.fastq
-    kallisto quant -i Bridger.fasta.kallisto -o SRR1175695_kallisto --bias -b 100 -t 64 SRR1175695_1.fastq SRR1175695_2.fastq
-    kallisto quant -i Bridger.fasta.kallisto -o SRR1175696_kallisto --bias -b 100 -t 64 SRR1175696_1.fastq SRR1175696_2.fastq
-    kallisto quant -i Bridger.fasta.kallisto -o SRR1175697_kallisto --bias -b 100 -t 64 SRR1175697_1.fastq SRR1175697_2.fastq
-    kallisto quant -i Bridger.fasta.kallisto -o SRR1175706_kallisto --bias -b 100 -t 64 SRR1175706_1.fastq SRR1175706_2.fastq
-    kallisto quant -i Bridger.fasta.kallisto -o SRR1175707_kallisto --bias -b 100 -t 64 SRR1175707_1.fastq SRR1175707_2.fastq
-    kallisto quant -i Bridger.fasta.kallisto -o SRR1175708_kallisto --bias -b 100 -t 64 SRR1175708_1.fastq SRR1175708_2.fastq
-    kallisto quant -i Bridger.fasta.kallisto -o SRR1175729_kallisto --bias -b 100 -t 64 SRR1175729_1.fastq SRR1175729_2.fastq
-    kallisto quant -i Bridger.fasta.kallisto -o SRR1175731_kallisto --bias -b 100 -t 64 SRR1175731_1.fastq SRR1175731_2.fastq
-    kallisto quant -i Bridger.fasta.kallisto -o SRR1175736_kallisto --bias -b 100 -t 64 SRR1175736_1.fastq SRR1175736_2.fastq
-    kallisto quant -i Bridger.fasta.kallisto -o SRR1175737_kallisto --bias -b 100 -t 64 SRR1175737_1.fastq SRR1175737_2.fastq
-    kallisto quant -i Bridger.fasta.kallisto -o SRR1175739_kallisto --bias -b 100 -t 64 SRR1175739_1.fastq SRR1175739_2.fastq
-    kallisto quant -i Bridger.fasta.kallisto -o SRR1175740_kallisto --bias -b 100 -t 64 SRR1175740_1.fastq SRR1175740_2.fastq
+    kallisto quant -i Trinity.fasta.kallisto -o SRR1174913_kallisto --bias -b 100 -t 64 SRR1174913_1.fastq SRR1174913_2.fastq
+    kallisto quant -i Trinity.fasta.kallisto -o SRR1175676_kallisto --bias -b 100 -t 64 SRR1175676_1.fastq SRR1175676_2.fastq
+    kallisto quant -i Trinity.fasta.kallisto -o SRR1175692_kallisto --bias -b 100 -t 64 SRR1175692_1.fastq SRR1175692_2.fastq
+    kallisto quant -i Trinity.fasta.kallisto -o SRR1175695_kallisto --bias -b 100 -t 64 SRR1175695_1.fastq SRR1175695_2.fastq
+    kallisto quant -i Trinity.fasta.kallisto -o SRR1175696_kallisto --bias -b 100 -t 64 SRR1175696_1.fastq SRR1175696_2.fastq
+    kallisto quant -i Trinity.fasta.kallisto -o SRR1175697_kallisto --bias -b 100 -t 64 SRR1175697_1.fastq SRR1175697_2.fastq
+    kallisto quant -i Trinity.fasta.kallisto -o SRR1175706_kallisto --bias -b 100 -t 64 SRR1175706_1.fastq SRR1175706_2.fastq
+    kallisto quant -i Trinity.fasta.kallisto -o SRR1175707_kallisto --bias -b 100 -t 64 SRR1175707_1.fastq SRR1175707_2.fastq
+    kallisto quant -i Trinity.fasta.kallisto -o SRR1175708_kallisto --bias -b 100 -t 64 SRR1175708_1.fastq SRR1175708_2.fastq
+    kallisto quant -i Trinity.fasta.kallisto -o SRR1175729_kallisto --bias -b 100 -t 64 SRR1175729_1.fastq SRR1175729_2.fastq
+    kallisto quant -i Trinity.fasta.kallisto -o SRR1175731_kallisto --bias -b 100 -t 64 SRR1175731_1.fastq SRR1175731_2.fastq
+    kallisto quant -i Trinity.fasta.kallisto -o SRR1175736_kallisto --bias -b 100 -t 64 SRR1175736_1.fastq SRR1175736_2.fastq
+    kallisto quant -i Trinity.fasta.kallisto -o SRR1175737_kallisto --bias -b 100 -t 64 SRR1175737_1.fastq SRR1175737_2.fastq
+    kallisto quant -i Trinity.fasta.kallisto -o SRR1175739_kallisto --bias -b 100 -t 64 SRR1175739_1.fastq SRR1175739_2.fastq
+    kallisto quant -i Trinity.fasta.kallisto -o SRR1175740_kallisto --bias -b 100 -t 64 SRR1175740_1.fastq SRR1175740_2.fastq
     ```
   - And for DE analysis, I use BWA MEM to map and DESeq2 for DE analysis
     ```
-    % for i in `\ls  | grep fastq | cut -d "_" -f 1 | uniq`; do; echo $i; perl bin/bamqc.pl Bridger.fasta ${i}_1.fastq ${i}_2.fastq bwa_${i}; done;
+    % for i in `\ls  | grep fastq | cut -d "_" -f 1 | uniq`; do; echo $i; perl bin/bamqc.pl Trinity.fasta ${i}_1.fastq ${i}_2.fastq ${i}_bwa; done;
     % perl bin/parse_bwa_counts_from_dir.pl . > count_bwa.txt
 
     ### THIS CORRESPONDS TO THE FOLLOWING COMMANDS;
-    perl bin/bamqc.pl Bridger.fasta SRR1174913_1.fastq SRR1174913_2.fastq bwa_SRR1174913
-    perl bin/bamqc.pl Bridger.fasta SRR1175676_1.fastq SRR1175676_2.fastq bwa_SRR1175676
-    perl bin/bamqc.pl Bridger.fasta SRR1175692_1.fastq SRR1175692_2.fastq bwa_SRR1175692
-    perl bin/bamqc.pl Bridger.fasta SRR1175695_1.fastq SRR1175695_2.fastq bwa_SRR1175695
-    perl bin/bamqc.pl Bridger.fasta SRR1175696_1.fastq SRR1175696_2.fastq bwa_SRR1175696
-    perl bin/bamqc.pl Bridger.fasta SRR1175697_1.fastq SRR1175697_2.fastq bwa_SRR1175697
-    perl bin/bamqc.pl Bridger.fasta SRR1175706_1.fastq SRR1175706_2.fastq bwa_SRR1175706
-    perl bin/bamqc.pl Bridger.fasta SRR1175707_1.fastq SRR1175707_2.fastq bwa_SRR1175707
-    perl bin/bamqc.pl Bridger.fasta SRR1175708_1.fastq SRR1175708_2.fastq bwa_SRR1175708
-    perl bin/bamqc.pl Bridger.fasta SRR1175729_1.fastq SRR1175729_2.fastq bwa_SRR1175729
-    perl bin/bamqc.pl Bridger.fasta SRR1175731_1.fastq SRR1175731_2.fastq bwa_SRR1175731
-    perl bin/bamqc.pl Bridger.fasta SRR1175736_1.fastq SRR1175736_2.fastq bwa_SRR1175736
-    perl bin/bamqc.pl Bridger.fasta SRR1175737_1.fastq SRR1175737_2.fastq bwa_SRR1175737
-    perl bin/bamqc.pl Bridger.fasta SRR1175739_1.fastq SRR1175739_2.fastq bwa_SRR1175739
-    perl bin/bamqc.pl Bridger.fasta SRR1175740_1.fastq SRR1175740_2.fastq bwa_SRR1175740
+    perl bin/bamqc.pl Trinity.fasta SRR1174913_1.fastq SRR1174913_2.fastq bwa_SRR1174913
+    perl bin/bamqc.pl Trinity.fasta SRR1175676_1.fastq SRR1175676_2.fastq bwa_SRR1175676
+    perl bin/bamqc.pl Trinity.fasta SRR1175692_1.fastq SRR1175692_2.fastq bwa_SRR1175692
+    perl bin/bamqc.pl Trinity.fasta SRR1175695_1.fastq SRR1175695_2.fastq bwa_SRR1175695
+    perl bin/bamqc.pl Trinity.fasta SRR1175696_1.fastq SRR1175696_2.fastq bwa_SRR1175696
+    perl bin/bamqc.pl Trinity.fasta SRR1175697_1.fastq SRR1175697_2.fastq bwa_SRR1175697
+    perl bin/bamqc.pl Trinity.fasta SRR1175706_1.fastq SRR1175706_2.fastq bwa_SRR1175706
+    perl bin/bamqc.pl Trinity.fasta SRR1175707_1.fastq SRR1175707_2.fastq bwa_SRR1175707
+    perl bin/bamqc.pl Trinity.fasta SRR1175708_1.fastq SRR1175708_2.fastq bwa_SRR1175708
+    perl bin/bamqc.pl Trinity.fasta SRR1175729_1.fastq SRR1175729_2.fastq bwa_SRR1175729
+    perl bin/bamqc.pl Trinity.fasta SRR1175731_1.fastq SRR1175731_2.fastq bwa_SRR1175731
+    perl bin/bamqc.pl Trinity.fasta SRR1175736_1.fastq SRR1175736_2.fastq bwa_SRR1175736
+    perl bin/bamqc.pl Trinity.fasta SRR1175737_1.fastq SRR1175737_2.fastq bwa_SRR1175737
+    perl bin/bamqc.pl Trinity.fasta SRR1175739_1.fastq SRR1175739_2.fastq bwa_SRR1175739
+    perl bin/bamqc.pl Trinity.fasta SRR1175740_1.fastq SRR1175740_2.fastq bwa_SRR1175740
     
     # Run DEseq2
     % Rscript bin/run_DESeq2_on_bwa_count_matrix.R count_bwa.txt > deseq2.txt
     
-
+    ```
+- Annotation
+  - Prediction of ORFs with Transdecoder
+    ```
+    % ~/bin/TransDecoder-TransDecoder-v5.5.0/TransDecoder.LongOrfs -t Trinity.fasta
+    % diamond blastp --query Trinity.fasta.transdecoder_dir/longest_orfs.pep --db /home/yuki.yoshida/database/db/uniref/uniref90.fasta.dmnd --outfmt 6 --sensitive --max-target-seqs 1 --evalue 1e-5 -c 1 -b 18.0 -o Trinity.fasta.transdecoder_dir/longest_orfs.pep.dBlastp.uniref90.1e-5
+    % 
     ```
     
 ## Gene predicition by Braker2
