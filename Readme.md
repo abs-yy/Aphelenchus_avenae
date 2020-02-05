@@ -371,8 +371,23 @@
 - Gene expression analysis
   - I wanted to try the Trinity pipeline
     ```
-    /path/to/trinityrnaseq-v2.9.1/util/align_and_estimate_abundance.pl --transcripts Trinity.fasta --seqType fq --samples_file ./samples_file --est_method RSEM  --aln_method bowtie2 --thread_count 64 --trinity_mode --prep_reference
-    
+    % cat samples_file
+	SRR1174913	RH100-1	/path/to/SRR1174913_1.fastq	/path/to/SRR1174913_2.fastq
+	SRR1175676	RH100-2	/path/to/SRR1175676_1.fastq	/path/to/SRR1175676_2.fastq
+	SRR1175692	RH100-3	/path/to/SRR1175692_1.fastq	/path/to/SRR1175692_2.fastq
+	SRR1175695	RH97-1	/path/to/SRR1175695_1.fastq	/path/to/SRR1175695_2.fastq
+	SRR1175696	RH97-2	/path/to/SRR1175696_1.fastq	/path/to/SRR1175696_2.fastq
+	SRR1175697	RH97-3	/path/to/SRR1175697_1.fastq	/path/to/SRR1175697_2.fastq
+	SRR1175706	RH85-1	/path/to/SRR1175706_1.fastq	/path/to/SRR1175706_2.fastq
+	SRR1175707	RH85-2	/path/to/SRR1175707_1.fastq	/path/to/SRR1175707_2.fastq
+	SRR1175708	RH85-3	/path/to/SRR1175708_1.fastq	/path/to/SRR1175708_2.fastq
+	SRR1175729	RH40-1	/path/to/SRR1175729_1.fastq	/path/to/SRR1175729_2.fastq
+	SRR1175731	RH40-2	/path/to/SRR1175731_1.fastq	/path/to/SRR1175731_2.fastq
+	SRR1175736	RH40-3	/path/to/SRR1175736_1.fastq	/path/to/SRR1175736_2.fastq
+	SRR1175737	RH00-1	/path/to/SRR1175737_1.fastq	/path/to/SRR1175737_2.fastq
+	SRR1175739	RH00-2	/path/to/SRR1175739_1.fastq	/path/to/SRR1175739_2.fastq
+	SRR1175740	RH00-3	/path/to/SRR1175740_1.fastq	/path/to/SRR1175740_2.fastq
+    % /path/to/trinityrnaseq-v2.9.1/util/align_and_estimate_abundance.pl --transcripts Trinity.fasta --seqType fq --samples_file ./samples_file --est_method RSEM  --aln_method bowtie2 --thread_count 64 --trinity_mode --prep_reference
     ```
   - I regulary use (Kallisto)[https://pachterlab.github.io/kallisto/] for expression quantification
     ```
@@ -433,7 +448,16 @@
     % busco --in Trinity.fasta.transdecoder.pep --out Trinity.fasta.transdecoder.pep.busco4.eukaryota --mode prot -c 32 -l /path/to/BUSCO/lineages/eukaryota_odb10
     C:98.0%[S:12.5%,D:85.5%],F:0.8%,M:1.2%,n:255
     ```
-    
+    - Better statistics compared to the CDS transcriptome assembly (`C:97.7%[S:11.8%,D:85.9%],F:0.4%,M:1.9%,n:255`)
+  - Triotate
+    ```
+    Build_Trinotate_Boilerplate_SQLite_db.pl triotate
+    /path/to/tmhmm-2.0c/bin/tmhmm --short < Trinity.fasta.transdecoder.pep > Trinity.fasta.transdecoder.pep.tmhmm
+    /path/to/signalp-4.1/signalp  -f short -n Trinity.fasta.transdecoder.pep.signalp.gff Trinity.fasta.transdecoder.pep
+    /path/to/hmmsearch --cpu 64 --domtblout Trinity.fasta.transdecoder.pep.hmmsearch.Pfam /path/to/Pfam_A/Pfam-A.hmm Trinity.fasta.transdecoder.pep
+    /path/to/blastall -p blastp -i Trinity.fasta.transdecoder.pep -d /path/to/uniprot_sprot.fasta -m 8 -a 2 -e 1e-3 -o Trinity.fasta.transdecoder.pep.blastp.swissprot.1e-3
+      /path/to/blastall -p blastx -i Trinity.fasta -d /path/to/uniprot_sprot.fasta -m 8 -a 2 -e 1e-3 -o Trinity.fasta.transdecoder.pep.blastx.swissprot.1e-3
+
 ## Gene predicition by Braker2
 - Repeat Masking
   - I use RepeatModeller to collect novel repeats and RepeatMasker to identify them in the genome
