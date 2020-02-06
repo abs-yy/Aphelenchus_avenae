@@ -388,14 +388,30 @@
 	/path/to/blastall -p blastp -i Trinity.fasta.transdecoder.pep -d /path/to/uniprot_sprot.fasta -m 8 -a 2 -e 1e-3 -o Trinity.fasta.transdecoder.pep.blastp.swissprot.1e-3
 	/path/to/blastall -p blastx -i Trinity.fasta -d /path/to/uniprot_sprot.fasta -m 8 -a 2 -e 1e-3 -o Trinity.fasta.transdecoder.pep.blastx.swissprot.1e-3
 
-	Trinotate triotate.sqlite init --gene_trans_map ../Trinity.fasta.gene_trans_map --transcript_fasta ../Trinity.fasta --transdecoder_pep ../Trinity.fasta.transdecoder.pep
+	Trinotate triotate.sqlite init --gene_trans_map Trinity.fasta.gene_trans_map --transcript_fasta Trinity.fasta --transdecoder_pep Trinity.fasta.transdecoder.pep
 	Trinotate triotate.sqlite  LOAD_swissprot_blastp  Trinity.fasta.transdecoder.pep.blastp.swissprot.1e-3.sorted.clean
 	Trinotate triotate.sqlite  LOAD_swissprot_blastx  Trinity.fasta.transdecoder.pep.blastx.swissprot.1e-3.sorted.clean
 	Trinotate triotate.sqlite LOAD_pfam ./Trinity.fasta.transdecoder.pep.hmmsearch.Pfam
 	Trinotate triotate.sqlite LOAD_tmhmm Trinity.fasta.transdecoder.pep.tmhmm
 	Trinotate triotate.sqlite LOAD_signalp Trinity.fasta.transdecoder.pep.signalp.gff
 	Trinotate triotate.sqlite report -incl_pep --incl_trans  > trinotate_annotation_report.xlsTrinotate triotate.sqlite report -incl_pep --incl_trans  > trinotate_annotation_report.xls
-	/path/to/Trinotate/util/extract_GO_assignments_from_Trinotate_xls.pl --Trinotate_xls trinotate_annotation_report.xls -G --include_ancestral_terms > trinotate_annotation_report.xls.go_annotations.txt
+	
+	# Create go_annotation file
+	## I tried using extract_GO_assignmentsfrom_Trinotate_xls.pl, but the go-basic file was missng. 
+	## (I installed Trinotate via conda) 
+	## So i wgettedd the file and placed it at the proper location
+	# % cd ~/anaconda3/envs/triotate/lib/5.26.2 
+	# % mkdir obo
+	# % wget http://purl.obolibrary.org/obo/go/go-basic.obo
+	# % gzip go-basic.obo 
+	% /path/to/Trinotate/util/extract_GO_assignments_from_Trinotate_xls.pl --Trinotate_xls trinotate_annotation_report.xls -G --include_ancestral_terms > trinotate_annotation_report.xls.go_annotations.txt
+	
+	# Create gene_lengths file
+	% /path/to/trinityrnaseq-v2.9.1/util/misc/fasta_seq_length.pl Trinity.fasta > Trinity.fasta.seq_lens
+	% /path/to/trinityrnaseq-v2.9.1/util/misc/TPM_weighted_gene_length.py  --gene_trans_map ./Trinity.fasta.gene_trans_map --trans_lengths ./Trinity.fasta.seq_lens --TPM_matrix ./quantification/RSEM.isoform.TMM.EXPR.matrix > Trinity.gene_lengths.txt
+	
+	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/analyze_diff_expr.pl -m RSEM.gene.TMM.EXPR.matrix -P 0.05 -C 2 --samples samples_file --examine_GO_enrichment --gene_lengths Trinity.gene_lengths.txt --GO_annots trinotate_annotation_report.xls.go_terms.txt --include_GOplot --max_genes_clust 20000
+	
   ```
 - Gene expression analysis
   - I wanted to try the Trinity pipeline
