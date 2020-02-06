@@ -331,7 +331,12 @@
     - Trinity v2.9     : C:97.7%[S:11.8%,D:85.9%],F:0.4%,M:1.9%,n:255
   - Looks like the Trinity v2.9 assembly is the best out of the three.
     - How about the supertranscripts of this Trinty assembly? 
-      - Looks horrible, let's throw this away C:67.5%[S:66.7%,D:0.8%],F:21.6%,M:10.9%,n:255
+      - Busco score is `C:67.5%[S:66.7%,D:0.8%],F:21.6%,M:10.9%,n:255`
+      - Looks horrible, let's throw this away
+    - How about cd-hit-est clustering?
+      - `~/bin/cdhit-master/cd-hit-est -o cdhit -c 0.98 -i Trinity.fasta -p 1 -d 0 -b 3 -T 64 -M 200000`
+      - Busco score is `C:96.9%[S:30.6%,D:66.3%],F:0.8%,M:2.3%,n:255`
+      - Missing 1 more gene and 1 more is fragmented, but has about 20% decrease/increase in Duplicates/Single copy BUSCO genes. Not that much of a difference, so lets use the full assembly
 - Looking for anhydrin-1
   - BLASTn search
     - Looks like anhydrin is contained in this assembly, 2 different genes?
