@@ -434,6 +434,8 @@
 	SRR1175740	RH00-3	/path/to/SRR1175740_1.fastq	/path/to/SRR1175740_2.fastq
 	% /path/to/trinityrnaseq-v2.9.1/util/align_and_estimate_abundance.pl --transcripts Trinity.fasta --seqType fq --samples_file ./samples_file --est_method RSEM  --aln_method bowtie2 --thread_count 64 --trinity_mode --prep_reference
 	% /path/to/trinityrnaseq-v2.9.1/util/abundance_estimates_to_matrix.pl --est_method RSEM --gene_trans_map ../Trinity.fasta.gene_trans_map  --name_sample_by_basedir ./RH*/RSEM.isoforms.results
+	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/replicates_to_sample_averages_matrix.pl --matrix ./../RSEM.gene.TMM.EXPR.matrix --samples_file ../samples_file_slit --avg_log_val
+	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/replicates_to_sample_averages_matrix.pl --matrix ./../RSEM.gene.TMM.EXPR.matrix --samples_file ../samples_file_slit --avg_log_val
     ```
     - DESeq2
     ```
@@ -443,19 +445,19 @@
     - edgeR (Trying tissue specificity protocol, RH condition as specificity)
     ```
 	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/run_DE_analysis.pl  --matrix RSEM.gene.counts.matrix --method edgeR --samples_file samples_file_slit
-	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/replicates_to_sample_averages_matrix.pl --matrix ./../RSEM.gene.TMM.EXPR.matrix --samples_file ../samples_file_slit --avg_log_val
 	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/TissueEnrichment/DE_results_to_pairwise_summary.pl  ../RSEM.gene.TMM.EXPR.matrix.avg_reps.byLog.matrix ./. > DE_pairwise_summary.txt
 	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/TissueEnrichment/pairwise_DE_summary_to_DE_classification.pl DE_pairwise_summary.txt
     ```
-  - As for the anhydrin gene....
+  - Let's look at the expression of anhydrobiosis related genes
+    - As for the anhydrin gene....
     ```
     % grep TRINITY_DN47292_c0_g1 ../RSEM.gene.TMM.EXPR.matrix.avg_reps.byLog.matrix
     				RH100	RH97	RH85	RH40	RH00
     TRINITY_DN115053_c0_g1	0.000	0.175	0.000	0.000	0.000
     TRINITY_DN47292_c0_g1	11.087	692.360	851.971	767.020	637.402
     ```
-    - We can see that anhydrin (TRINITY_DN47292_c0_g1) is highly induced in humidities other than 100%
-  - How about LEA genes?
+      - We can see that anhydrin (TRINITY_DN47292_c0_g1) is highly induced in humidities other than 100%
+    - How about LEA genes?
     ```
     perl -lane 'print if @F[2] =~ /^LEA\d_/' annotation/trinotate_annotation_report.xls | cut -f 1-3 | cut -f 1 | uniq | perl bin/get_blastp_from_stdin.pl RSEM.gene.TMM.EXPR.matrix.avg_reps.byLog.matrix
     				RH100	RH97	RH85	RH40	RH00   
@@ -477,20 +479,8 @@
     TRINITY_DN84372_c0_g1	0.000	0.000	0.156	0.264	0.525
     TRINITY_DN84372_c1_g1	0.000	0.107	0.123	0.387	0.386
     ```
-    - TRINITY_DN13690_c0_g1, TRINITY_DN26380_c0_g1, TRINITY_DN2963_c0_g1, TRINITY_DN71314_c0_g1 looks like they are indcued by desiccation.
-  - I regulary use (Kallisto)[https://pachterlab.github.io/kallisto/] for expression quantification
-    ```
-    % kallisto index -i Trinity.fasta.kallisto Trinity.fasta
-    % for i in `\ls  | grep fastq | cut -d "_" -f 1 | uniq` ; do; echo $i;  kallisto quant -i Trinity.fasta.kallisto -o ${i}_kallisto --bias -b 100 -t 64 ${i}_1.fastq ${i}_2.fastq; done;
-    % perl bin/parse_kallisto_from_dir.pl . > kallisto.txt
-     ```
-  - And for DE analysis, I use BWA MEM to map and DESeq2
-    ```
-    % for i in `\ls  | grep fastq | cut -d "_" -f 1 | uniq`; do; echo $i; perl bin/bamqc.pl Trinity.fasta ${i}_1.fastq ${i}_2.fastq ${i}_bwa; done;
-    % perl bin/parse_bwa_counts_from_dir.pl . > count_bwa.txt
-    # Run DEseq2
-    % Rscript bin/run_DESeq2_on_bwa_count_matrix.R count_bwa.txt > deseq2.txt
-     ```
+      - TRINITY_DN13690_c0_g1, TRINITY_DN26380_c0_g1, TRINITY_DN2963_c0_g1, TRINITY_DN71314_c0_g1 looks like they are indcued by desiccation.
+    - Looks promising, I'm going to look further into this data
 
 ## Gene predicition by Braker2
 - Repeat Masking
