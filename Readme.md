@@ -368,10 +368,39 @@
 	ENA|AAQ20894|AAQ20894.1	TRINITY_DN115053_c0_g1_i1	90.32	31	3	0	168	260	138	46	2e-20	62.9
 	ENA|AAQ20894|AAQ20894.1	TRINITY_DN115053_c0_g1_i1	92.00	25	2	0	27	101	279	205	2e-20	51.9
     ```
+- Annotation
+  - Prediction of ORFs with Transdecoder
+    ```
+	% ~/bin/TransDecoder-TransDecoder-v5.5.0/TransDecoder.LongOrfs -t Trinity.fasta
+	% diamond blastp --query Trinity.fasta.transdecoder_dir/longest_orfs.pep --db /home/yuki.yoshida/database/db/uniref/uniref90.fasta.dmnd --outfmt 6 --sensitive --max-target-seqs 1 --evalue 1e-5 -c 1 -b 18.0 -o Trinity.fasta.transdecoder_dir/longest_orfs.pep.dBlastp.uniref90.1e-5
+	%  hmmsearch --cpu 32 --domtblout longest_orfs.pep.hmmsearch.pfam.1e-3 /path/to/Pfam/pfam-A_32.0/Pfam-A.hmm longest_orfs.pep
+	% /path/to/TransDecoder-TransDecoder-v5.5.0/TransDecoder.Predict -t Trinity.fasta --retain_pfam_hits Trinity.fasta.transdecoder_dir/longest_orfs.pep.hmmsearch.pfam.1e-3  --retain_blastp_hits Trinity.fasta.transdecoder_dir/longest_orfs.pep.dBlastp.uniref90.1e-5
+	% busco --in Trinity.fasta.transdecoder.pep --out Trinity.fasta.transdecoder.pep.busco4.eukaryota --mode prot -c 32 -l /path/to/BUSCO/lineages/eukaryota_odb10
+	C:98.0%[S:12.5%,D:85.5%],F:0.8%,M:1.2%,n:255
+	```
+    - Better statistics compared to the CDS transcriptome assembly (`C:97.7%[S:11.8%,D:85.9%],F:0.4%,M:1.9%,n:255`)
+  - Annotation of transcripts with Triotate
+    ```
+	Build_Trinotate_Boilerplate_SQLite_db.pl triotate
+	/path/to/tmhmm-2.0c/bin/tmhmm --short < Trinity.fasta.transdecoder.pep > Trinity.fasta.transdecoder.pep.tmhmm
+	/path/to/signalp-4.1/signalp  -f short -n Trinity.fasta.transdecoder.pep.signalp.gff Trinity.fasta.transdecoder.pep
+	/path/to/hmmsearch --cpu 64 --domtblout Trinity.fasta.transdecoder.pep.hmmsearch.Pfam /path/to/Pfam_A/Pfam-A.hmm Trinity.fasta.transdecoder.pep
+	/path/to/blastall -p blastp -i Trinity.fasta.transdecoder.pep -d /path/to/uniprot_sprot.fasta -m 8 -a 2 -e 1e-3 -o Trinity.fasta.transdecoder.pep.blastp.swissprot.1e-3
+	/path/to/blastall -p blastx -i Trinity.fasta -d /path/to/uniprot_sprot.fasta -m 8 -a 2 -e 1e-3 -o Trinity.fasta.transdecoder.pep.blastx.swissprot.1e-3
+
+	Trinotate triotate.sqlite init --gene_trans_map ../Trinity.fasta.gene_trans_map --transcript_fasta ../Trinity.fasta --transdecoder_pep ../Trinity.fasta.transdecoder.pep
+	Trinotate triotate.sqlite  LOAD_swissprot_blastp  Trinity.fasta.transdecoder.pep.blastp.swissprot.1e-3.sorted.clean
+	Trinotate triotate.sqlite  LOAD_swissprot_blastx  Trinity.fasta.transdecoder.pep.blastx.swissprot.1e-3.sorted.clean
+	Trinotate triotate.sqlite LOAD_pfam ./Trinity.fasta.transdecoder.pep.hmmsearch.Pfam
+	Trinotate triotate.sqlite LOAD_tmhmm Trinity.fasta.transdecoder.pep.tmhmm
+	Trinotate triotate.sqlite LOAD_signalp Trinity.fasta.transdecoder.pep.signalp.gff
+	Trinotate triotate.sqlite report -incl_pep --incl_trans  > trinotate_annotation_report.xlsTrinotate triotate.sqlite report -incl_pep --incl_trans  > trinotate_annotation_report.xls
+	/path/to/Trinotate/util/extract_GO_assignments_from_Trinotate_xls.pl --Trinotate_xls trinotate_annotation_report.xls -G --include_ancestral_terms > trinotate_annotation_report.xls.go_annotations.txt
+  ```
 - Gene expression analysis
   - I wanted to try the Trinity pipeline
     ```
-    % cat samples_file
+	% cat samples_file
 	SRR1174913	RH100-1	/path/to/SRR1174913_1.fastq	/path/to/SRR1174913_2.fastq
 	SRR1175676	RH100-2	/path/to/SRR1175676_1.fastq	/path/to/SRR1175676_2.fastq
 	SRR1175692	RH100-3	/path/to/SRR1175692_1.fastq	/path/to/SRR1175692_2.fastq
@@ -387,7 +416,10 @@
 	SRR1175737	RH00-1	/path/to/SRR1175737_1.fastq	/path/to/SRR1175737_2.fastq
 	SRR1175739	RH00-2	/path/to/SRR1175739_1.fastq	/path/to/SRR1175739_2.fastq
 	SRR1175740	RH00-3	/path/to/SRR1175740_1.fastq	/path/to/SRR1175740_2.fastq
-    % /path/to/trinityrnaseq-v2.9.1/util/align_and_estimate_abundance.pl --transcripts Trinity.fasta --seqType fq --samples_file ./samples_file --est_method RSEM  --aln_method bowtie2 --thread_count 64 --trinity_mode --prep_reference
+	% /path/to/trinityrnaseq-v2.9.1/util/align_and_estimate_abundance.pl --transcripts Trinity.fasta --seqType fq --samples_file ./samples_file --est_method RSEM  --aln_method bowtie2 --thread_count 64 --trinity_mode --prep_reference
+	% /path/to/trinityrnaseq-v2.9.1/util/abundance_estimates_to_matrix.pl --est_method RSEM --gene_trans_map ../Trinity.fasta.gene_trans_map  --name_sample_by_basedir ./RH*/RSEM.isoforms.results
+	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/run_DE_analysis.pl  --matrix RSEM.gene.counts.matrix --method DESeq2 --samples_file samples_file_slit
+	% ~/bin/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/analyze_diff_expr.pl --matrix ./RSEM.gene.TMM.EXPR.matrix -P 0.05 -C 2  -samples samples_file_slit --examine_GO_enrichment --GO_annots --gene_lengths
     ```
   - I regulary use (Kallisto)[https://pachterlab.github.io/kallisto/] for expression quantification
     ```
@@ -438,25 +470,6 @@
     % Rscript bin/run_DESeq2_on_bwa_count_matrix.R count_bwa.txt > deseq2.txt
     
     ```
-- Annotation
-  - Prediction of ORFs with Transdecoder
-    ```
-    % ~/bin/TransDecoder-TransDecoder-v5.5.0/TransDecoder.LongOrfs -t Trinity.fasta
-    % diamond blastp --query Trinity.fasta.transdecoder_dir/longest_orfs.pep --db /home/yuki.yoshida/database/db/uniref/uniref90.fasta.dmnd --outfmt 6 --sensitive --max-target-seqs 1 --evalue 1e-5 -c 1 -b 18.0 -o Trinity.fasta.transdecoder_dir/longest_orfs.pep.dBlastp.uniref90.1e-5
-    %  hmmsearch --cpu 32 --domtblout longest_orfs.pep.hmmsearch.pfam.1e-3 /path/to/Pfam/pfam-A_32.0/Pfam-A.hmm longest_orfs.pep
-    % /path/to/TransDecoder-TransDecoder-v5.5.0/TransDecoder.Predict -t Trinity.fasta --retain_pfam_hits Trinity.fasta.transdecoder_dir/longest_orfs.pep.hmmsearch.pfam.1e-3  --retain_blastp_hits Trinity.fasta.transdecoder_dir/longest_orfs.pep.dBlastp.uniref90.1e-5
-    % busco --in Trinity.fasta.transdecoder.pep --out Trinity.fasta.transdecoder.pep.busco4.eukaryota --mode prot -c 32 -l /path/to/BUSCO/lineages/eukaryota_odb10
-    C:98.0%[S:12.5%,D:85.5%],F:0.8%,M:1.2%,n:255
-    ```
-    - Better statistics compared to the CDS transcriptome assembly (`C:97.7%[S:11.8%,D:85.9%],F:0.4%,M:1.9%,n:255`)
-  - Triotate
-    ```
-    Build_Trinotate_Boilerplate_SQLite_db.pl triotate
-    /path/to/tmhmm-2.0c/bin/tmhmm --short < Trinity.fasta.transdecoder.pep > Trinity.fasta.transdecoder.pep.tmhmm
-    /path/to/signalp-4.1/signalp  -f short -n Trinity.fasta.transdecoder.pep.signalp.gff Trinity.fasta.transdecoder.pep
-    /path/to/hmmsearch --cpu 64 --domtblout Trinity.fasta.transdecoder.pep.hmmsearch.Pfam /path/to/Pfam_A/Pfam-A.hmm Trinity.fasta.transdecoder.pep
-    /path/to/blastall -p blastp -i Trinity.fasta.transdecoder.pep -d /path/to/uniprot_sprot.fasta -m 8 -a 2 -e 1e-3 -o Trinity.fasta.transdecoder.pep.blastp.swissprot.1e-3
-      /path/to/blastall -p blastx -i Trinity.fasta -d /path/to/uniprot_sprot.fasta -m 8 -a 2 -e 1e-3 -o Trinity.fasta.transdecoder.pep.blastx.swissprot.1e-3
 
 ## Gene predicition by Braker2
 - Repeat Masking
