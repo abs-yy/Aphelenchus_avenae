@@ -411,10 +411,10 @@
 	% /path/to/trinityrnaseq-v2.9.1/util/misc/TPM_weighted_gene_length.py  --gene_trans_map ./Trinity.fasta.gene_trans_map --trans_lengths ./Trinity.fasta.seq_lens --TPM_matrix ./quantification/RSEM.isoform.TMM.EXPR.matrix > Trinity.gene_lengths.txt
 	
 	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/analyze_diff_expr.pl -m RSEM.gene.TMM.EXPR.matrix -P 0.05 -C 2 --samples samples_file --examine_GO_enrichment --gene_lengths Trinity.gene_lengths.txt --GO_annots trinotate_annotation_report.xls.go_terms.txt --include_GOplot --max_genes_clust 20000
-	
   ```
 - Gene expression analysis
   - I wanted to try the Trinity pipeline
+    - DESeq2
     ```
 	% cat samples_file
 	SRR1174913	RH100-1	/path/to/SRR1174913_1.fastq	/path/to/SRR1174913_2.fastq
@@ -436,6 +436,13 @@
 	% /path/to/trinityrnaseq-v2.9.1/util/abundance_estimates_to_matrix.pl --est_method RSEM --gene_trans_map ../Trinity.fasta.gene_trans_map  --name_sample_by_basedir ./RH*/RSEM.isoforms.results
 	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/run_DE_analysis.pl  --matrix RSEM.gene.counts.matrix --method DESeq2 --samples_file samples_file_slit
 	% ~/bin/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/analyze_diff_expr.pl --matrix ./RSEM.gene.TMM.EXPR.matrix -P 0.05 -C 2  -samples samples_file_slit --examine_GO_enrichment --GO_annots --gene_lengths
+    ```
+    - edgeR (Trying tissue specificity protocol, RH condition as specificity)
+    ```
+	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/run_DE_analysis.pl  --matrix RSEM.gene.counts.matrix --method edgeR --samples_file samples_file_slit
+	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/replicates_to_sample_averages_matrix.pl --matrix ./../RSEM.gene.TMM.EXPR.matrix --samples_file ../samples_file_slit --avg_log_val
+	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/TissueEnrichment/DE_results_to_pairwise_summary.pl  ../RSEM.gene.TMM.EXPR.matrix.avg_reps.byLog.matrix ./. > DE_pairwise_summary.txt
+	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/TissueEnrichment/pairwise_DE_summary_to_DE_classification.pl DE_pairwise_summary.txt
     ```
   - I regulary use (Kallisto)[https://pachterlab.github.io/kallisto/] for expression quantification
     ```
