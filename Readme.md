@@ -414,7 +414,7 @@
   ```
 - Gene expression analysis
   - I wanted to try the Trinity pipeline
-    - DESeq2
+    - Gene expression quantification
     ```
 	% cat samples_file
 	SRR1174913	RH100-1	/path/to/SRR1174913_1.fastq	/path/to/SRR1174913_2.fastq
@@ -434,6 +434,9 @@
 	SRR1175740	RH00-3	/path/to/SRR1175740_1.fastq	/path/to/SRR1175740_2.fastq
 	% /path/to/trinityrnaseq-v2.9.1/util/align_and_estimate_abundance.pl --transcripts Trinity.fasta --seqType fq --samples_file ./samples_file --est_method RSEM  --aln_method bowtie2 --thread_count 64 --trinity_mode --prep_reference
 	% /path/to/trinityrnaseq-v2.9.1/util/abundance_estimates_to_matrix.pl --est_method RSEM --gene_trans_map ../Trinity.fasta.gene_trans_map  --name_sample_by_basedir ./RH*/RSEM.isoforms.results
+    ```
+    - DESeq2
+    ```
 	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/run_DE_analysis.pl  --matrix RSEM.gene.counts.matrix --method DESeq2 --samples_file samples_file_slit
 	% ~/bin/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/analyze_diff_expr.pl --matrix ./RSEM.gene.TMM.EXPR.matrix -P 0.05 -C 2  -samples samples_file_slit --examine_GO_enrichment --GO_annots --gene_lengths
     ```
@@ -444,55 +447,50 @@
 	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/TissueEnrichment/DE_results_to_pairwise_summary.pl  ../RSEM.gene.TMM.EXPR.matrix.avg_reps.byLog.matrix ./. > DE_pairwise_summary.txt
 	% /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/TissueEnrichment/pairwise_DE_summary_to_DE_classification.pl DE_pairwise_summary.txt
     ```
+  - As for the anhydrin gene....
+    ```
+    % grep TRINITY_DN47292_c0_g1 ../RSEM.gene.TMM.EXPR.matrix.avg_reps.byLog.matrix
+    				RH100	RH97	RH85	RH40	RH00
+    TRINITY_DN115053_c0_g1	0.000	0.175	0.000	0.000	0.000
+    TRINITY_DN47292_c0_g1	11.087	692.360	851.971	767.020	637.402
+    ```
+    - We can see that anhydrin (TRINITY_DN47292_c0_g1) is highly induced in humidities other than 100%
+  - How about LEA genes?
+    ```
+    perl -lane 'print if @F[2] =~ /^LEA\d_/' annotation/trinotate_annotation_report.xls | cut -f 1-3 | cut -f 1 | uniq | perl bin/get_blastp_from_stdin.pl RSEM.gene.TMM.EXPR.matrix.avg_reps.byLog.matrix
+    				RH100	RH97	RH85	RH40	RH00   
+    TRINITY_DN101806_c0_g1	0.000	0.000	0.000	0.000	0.214
+    TRINITY_DN13690_c0_g1	96.307	509.535	563.363	762.718	473.317
+    TRINITY_DN17844_c1_g1	0.417	3.156	2.374	6.403	3.807
+    TRINITY_DN24466_c0_g1	0.000	2.545	4.742	4.641	3.418
+    TRINITY_DN26380_c0_g1	206.626	6484.070	7147.226	7229.583	6550.971
+    TRINITY_DN2963_c0_g1	79.157	894.473	1055.229	1098.967	828.478
+    TRINITY_DN33862_c0_g1	0.140	0.816	1.704	2.419	2.472
+    TRINITY_DN36679_c0_g1	2.030	3.942	3.162	2.218	2.963
+    TRINITY_DN36679_c1_g1	0.000	0.000	0.000	0.000	0.000
+    TRINITY_DN45013_c0_g1	0.000	0.224	0.479	0.000	0.000
+    TRINITY_DN55313_c1_g1	0.000	0.298	0.144	0.000	0.299
+    TRINITY_DN71314_c0_g1	29.771	440.156	564.575	679.428	481.912
+    TRINITY_DN71314_c4_g1	0.000	0.000	0.000	0.589	0.000
+    TRINITY_DN71314_c6_g1	0.000	0.000	0.000	0.000	0.000
+    TRINITY_DN82931_c1_g1	0.000	0.000	0.000	0.000	0.341
+    TRINITY_DN84372_c0_g1	0.000	0.000	0.156	0.264	0.525
+    TRINITY_DN84372_c1_g1	0.000	0.107	0.123	0.387	0.386
+    ```
+    - TRINITY_DN13690_c0_g1, TRINITY_DN26380_c0_g1, TRINITY_DN2963_c0_g1, TRINITY_DN71314_c0_g1 looks like they are indcued by desiccation.
   - I regulary use (Kallisto)[https://pachterlab.github.io/kallisto/] for expression quantification
     ```
     % kallisto index -i Trinity.fasta.kallisto Trinity.fasta
     % for i in `\ls  | grep fastq | cut -d "_" -f 1 | uniq` ; do; echo $i;  kallisto quant -i Trinity.fasta.kallisto -o ${i}_kallisto --bias -b 100 -t 64 ${i}_1.fastq ${i}_2.fastq; done;
     % perl bin/parse_kallisto_from_dir.pl . > kallisto.txt
-    
-    ### THIS CORESPONDS TO THE FOLLOWING COMMANDS;
-    kallisto quant -i Trinity.fasta.kallisto -o SRR1174913_kallisto --bias -b 100 -t 64 SRR1174913_1.fastq SRR1174913_2.fastq
-    kallisto quant -i Trinity.fasta.kallisto -o SRR1175676_kallisto --bias -b 100 -t 64 SRR1175676_1.fastq SRR1175676_2.fastq
-    kallisto quant -i Trinity.fasta.kallisto -o SRR1175692_kallisto --bias -b 100 -t 64 SRR1175692_1.fastq SRR1175692_2.fastq
-    kallisto quant -i Trinity.fasta.kallisto -o SRR1175695_kallisto --bias -b 100 -t 64 SRR1175695_1.fastq SRR1175695_2.fastq
-    kallisto quant -i Trinity.fasta.kallisto -o SRR1175696_kallisto --bias -b 100 -t 64 SRR1175696_1.fastq SRR1175696_2.fastq
-    kallisto quant -i Trinity.fasta.kallisto -o SRR1175697_kallisto --bias -b 100 -t 64 SRR1175697_1.fastq SRR1175697_2.fastq
-    kallisto quant -i Trinity.fasta.kallisto -o SRR1175706_kallisto --bias -b 100 -t 64 SRR1175706_1.fastq SRR1175706_2.fastq
-    kallisto quant -i Trinity.fasta.kallisto -o SRR1175707_kallisto --bias -b 100 -t 64 SRR1175707_1.fastq SRR1175707_2.fastq
-    kallisto quant -i Trinity.fasta.kallisto -o SRR1175708_kallisto --bias -b 100 -t 64 SRR1175708_1.fastq SRR1175708_2.fastq
-    kallisto quant -i Trinity.fasta.kallisto -o SRR1175729_kallisto --bias -b 100 -t 64 SRR1175729_1.fastq SRR1175729_2.fastq
-    kallisto quant -i Trinity.fasta.kallisto -o SRR1175731_kallisto --bias -b 100 -t 64 SRR1175731_1.fastq SRR1175731_2.fastq
-    kallisto quant -i Trinity.fasta.kallisto -o SRR1175736_kallisto --bias -b 100 -t 64 SRR1175736_1.fastq SRR1175736_2.fastq
-    kallisto quant -i Trinity.fasta.kallisto -o SRR1175737_kallisto --bias -b 100 -t 64 SRR1175737_1.fastq SRR1175737_2.fastq
-    kallisto quant -i Trinity.fasta.kallisto -o SRR1175739_kallisto --bias -b 100 -t 64 SRR1175739_1.fastq SRR1175739_2.fastq
-    kallisto quant -i Trinity.fasta.kallisto -o SRR1175740_kallisto --bias -b 100 -t 64 SRR1175740_1.fastq SRR1175740_2.fastq
-    ```
+     ```
   - And for DE analysis, I use BWA MEM to map and DESeq2
     ```
     % for i in `\ls  | grep fastq | cut -d "_" -f 1 | uniq`; do; echo $i; perl bin/bamqc.pl Trinity.fasta ${i}_1.fastq ${i}_2.fastq ${i}_bwa; done;
     % perl bin/parse_bwa_counts_from_dir.pl . > count_bwa.txt
-
-    ### THIS CORRESPONDS TO THE FOLLOWING COMMANDS;
-    perl bin/bamqc.pl Trinity.fasta SRR1174913_1.fastq SRR1174913_2.fastq bwa_SRR1174913
-    perl bin/bamqc.pl Trinity.fasta SRR1175676_1.fastq SRR1175676_2.fastq bwa_SRR1175676
-    perl bin/bamqc.pl Trinity.fasta SRR1175692_1.fastq SRR1175692_2.fastq bwa_SRR1175692
-    perl bin/bamqc.pl Trinity.fasta SRR1175695_1.fastq SRR1175695_2.fastq bwa_SRR1175695
-    perl bin/bamqc.pl Trinity.fasta SRR1175696_1.fastq SRR1175696_2.fastq bwa_SRR1175696
-    perl bin/bamqc.pl Trinity.fasta SRR1175697_1.fastq SRR1175697_2.fastq bwa_SRR1175697
-    perl bin/bamqc.pl Trinity.fasta SRR1175706_1.fastq SRR1175706_2.fastq bwa_SRR1175706
-    perl bin/bamqc.pl Trinity.fasta SRR1175707_1.fastq SRR1175707_2.fastq bwa_SRR1175707
-    perl bin/bamqc.pl Trinity.fasta SRR1175708_1.fastq SRR1175708_2.fastq bwa_SRR1175708
-    perl bin/bamqc.pl Trinity.fasta SRR1175729_1.fastq SRR1175729_2.fastq bwa_SRR1175729
-    perl bin/bamqc.pl Trinity.fasta SRR1175731_1.fastq SRR1175731_2.fastq bwa_SRR1175731
-    perl bin/bamqc.pl Trinity.fasta SRR1175736_1.fastq SRR1175736_2.fastq bwa_SRR1175736
-    perl bin/bamqc.pl Trinity.fasta SRR1175737_1.fastq SRR1175737_2.fastq bwa_SRR1175737
-    perl bin/bamqc.pl Trinity.fasta SRR1175739_1.fastq SRR1175739_2.fastq bwa_SRR1175739
-    perl bin/bamqc.pl Trinity.fasta SRR1175740_1.fastq SRR1175740_2.fastq bwa_SRR1175740
-    
     # Run DEseq2
     % Rscript bin/run_DESeq2_on_bwa_count_matrix.R count_bwa.txt > deseq2.txt
-    
-    ```
+     ```
 
 ## Gene predicition by Braker2
 - Repeat Masking
