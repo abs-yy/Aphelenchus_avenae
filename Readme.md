@@ -384,6 +384,51 @@
 	C:98.0%[S:12.5%,D:85.5%],F:0.8%,M:1.2%,n:255
 	```
     - Better statistics compared to the CDS transcriptome assembly (`C:97.7%[S:11.8%,D:85.9%],F:0.4%,M:1.9%,n:255`)
+  - Identification of transcripts found by ESTs [Karim et al. 2009 BMC Genomcis](https://bmcgenomics.biomedcentral.com/articles/10.1186/1471-2164-10-525)
+    - Download EST sequences from Genbank
+    - blast against assembly
+      ```
+      % grep ">" Karim_etal_EST.fna | wc -l
+      5119
+      % blastall -p blastn -i Karim_etal_EST.fna -d  Trinity.fasta -m 8 -a 64 -e 1e-30 -o Karim_etal_EST.fna.blastn.Trinity_fasta.1e-30
+      % cut -f 1 Karim_etal_EST.fna.blastn.Trinity_fasta.1e-30 | sort | uniq | wc -l
+      4615
+      % cut -f 1 Karim_etal_EST.fna.blastn.Trinity_fasta.1e-30 | sort | uniq | perl bin/get_tabular_from_stdin.pl Karim_etal_EST.fna.list 1 1  | grep -f - Karim_etal_EST.fna | perl bin/get_fasta_for_stdin.pl Karim_etal_EST.fna > Karim_etal_EST.fna.blastn.Trinity_fasta.1e-30.nothit.fa
+      % blastall -p blastx -i Karim_etal_EST.fna.blastn.Trinity_fasta.1e-30.nothit.fa -d ~/db/uniprot_sprot/2019-02-15/uniprot_sprot.fasta -m 8 -a 64 -e 1e-15 -o Karim_etal_EST.fna.blastn.Trinity_fasta.1e-30.nothit.fa.blastx.swissprot.1e-15
+      % sort -k 1,1 -u Karim_etal_EST.fna.blastn.Trinity_fasta.1e-30.nothit.fa.blastx.swissprot.1e-15Karim_etal_EST.fna.blastn.Trinity_fasta.1e-30.nothit.fa.blastx.swissprot.1e-15.sorted
+      % cat Karim_etal_EST.fna.blastn.Trinity_fasta.1e-30.nothit.fa.blastx.swissprot.1e-15.sorted
+      GO479282.1	sp|P24893|COX1_CAEEL	67.38	141	46	0	50	472	15	155	1e-28	 125
+      GO479349.1	sp|P24879|COX3_ASCSU	72.34	94	26	0	3	284	147	240	1e-26	 118
+      GO479390.1	sp|P09446|HSP7A_CAEEL	67.74	124	40	0	1	372	34	157	5e-35	 146
+      GO479611.1	sp|P27443|MAOM_ASCSU	56.18	89	39	0	7	273	552	640	7e-26	 115
+      GO480029.1	sp|P24881|COX1_ASCSU	60.29	68	27	0	5	208	391	458	2e-19	94.4
+      GO480036.1	sp|P24879|COX3_ASCSU	71.31	122	35	0	423	58	116	237	5e-37	 152
+      GO480530.1	sp|P45887|ACT5_BACDO	74.23	97	24	1	265	552	1	97	7e-39	 160
+      GO480637.1	sp|P24881|COX1_ASCSU	65.85	123	42	0	1	369	336	458	2e-43	 176
+      GO480955.1	sp|P34545|CBP1_CAEEL	47.71	109	44	2	145	432	1499	1607	3e-24	 110
+      GO480978.1	sp|Q23307|YHB8_CAEEL	33.95	162	103	6	6	479	81	233	1e-17	89.4
+      GO481045.1	sp|P24887|NU1M_CAEEL	50.67	150	68	1	67	498	23	172	1e-34	 145
+      GO481258.1	sp|P09446|HSP7A_CAEEL	70.71	198	57	1	1	591	34	231	2e-60	 232
+      GO481390.1	sp|P24881|COX1_ASCSU	66.12	121	41	0	6	368	338	458	4e-43	 174
+      GO481400.1	sp|A9JRD8|BTB6A_DANRE	34.20	193	125	5	22	594	102	282	3e-26	 118
+      GO481490.1	sp|P49187|MK10_RAT	42.16	185	105	4	84	632	63	231	3e-30	 132
+      GO481560.1	sp|O01530|ASP6_CAEEL	31.44	194	122	3	2	550	195	386	8e-19	93.6
+      GO481564.1	sp|P24894|COX2_CAEEL	70.65	92	27	0	4	279	3	94	3e-33	 140
+      GO481742.1	sp|Q8SEM9|COX2_CAERE	60.00	90	36	0	10	279	3	92	1e-17	89.7
+      GO481998.1	sp|P24879|COX3_ASCSU	61.11	126	49	0	7	384	3	128	1e-34	 145
+      GO482022.1	sp|Q99816|TS101_HUMAN	36.55	145	90	1	20	448	13	157	2e-19	95.5
+      GO482122.1	sp|P24879|COX3_ASCSU	72.95	122	33	0	3	368	116	237	7e-39	 159
+      GO482257.1	sp|P40984|UBC9_SCHPO	64.56	79	28	0	122	358	8	86	8e-27	 119
+      GO482306.1	sp|Q03206|RAC1_CAEEL	75.34	73	18	1	217	435	2	58	1e-23	 108
+      GO483333.1	sp|P24879|COX3_ASCSU	64.71	136	48	0	7	414	3	138	3e-36	 150
+      GO484123.1	sp|P27443|MAOM_ASCSU	61.64	73	28	0	1	219	306	378	3e-21	 100
+      GO484225.1	sp|P24887|NU1M_CAEEL	55.00	120	54	0	70	429	23	142	1e-29	 128
+      GO484283.1	sp|P24879|COX3_ASCSU	61.65	133	51	0	10	408	3	135	3e-32	 137
+      GO484300.1	sp|P24879|COX3_ASCSU	53.96	139	64	0	4	420	6	144	2e-25	 114
+      ```
+      - ESTs that did not have a match with the transcriptome assemblies tended to be mitochondrial genes (i.e. COX)
+    - 90.15% of the ESTs had a match, and 28/504 of the unmatched ESTs matched with a swissprot gene
+	
   - Annotation of transcripts with Triotate
     ```
 	Build_Trinotate_Boilerplate_SQLite_db.pl triotate
