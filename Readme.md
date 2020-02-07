@@ -456,7 +456,8 @@ Trinotate triotate.sqlite report -incl_pep --incl_trans  > trinotate_annotation_
 ```
 - Gene expression analysis
   - I wanted to try the Trinity pipeline
-    - Gene expression quantification
+  - Gene expression quantification
+
 ```
 % cat samples_file
 SRR1174913	RH100-1	/path/to/SRR1174913_1.fastq	/path/to/SRR1174913_2.fastq
@@ -479,13 +480,19 @@ SRR1175740	RH00-3	/path/to/SRR1175740_1.fastq	/path/to/SRR1175740_2.fastq
 % /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/replicates_to_sample_averages_matrix.pl --matrix ./../RSEM.gene.TMM.EXPR.matrix --samples_file ../samples_file_slit --avg_log_val
 % /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/replicates_to_sample_averages_matrix.pl --matrix ./../RSEM.gene.TMM.EXPR.matrix --samples_file ../samples_file_slit --avg_log_val
 ```
-
-   - DESeq2
+  - Correlation heatmap
+    - ![Figure](images/diffExpr.P0.05_C2.matrix.log2.centered.sample_cor_matrix.pdf)
+  - Sample heatmap
+    - ![Figure](images/diffExpr.P0.05_C2.matrix.log2.centered.genes_vs_samples_heatmap.pdf)
+  - DESeq2
 ```
 % /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/run_DE_analysis.pl  --matrix RSEM.gene.counts.matrix --method DESeq2 --samples_file samples_file_slit
 % ~/bin/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/analyze_diff_expr.pl --matrix ./RSEM.gene.TMM.EXPR.matrix -P 0.05 -C 2  -samples samples_file_slit --examine_GO_enrichment --GO_annots --gene_lengths
 ```
-   - edgeR (Trying tissue specificity protocol, RH condition as specificity)
+  - Custering
+    - `/path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/define_clusters_by_cutting_tree.pl  -R ./diffExpr.P0.05_C2.matrix.RData --Ptree 30`
+    - ![Figure](images/my_cluster_plots.pdf)
+  - edgeR (Trying tissue specificity protocol, RH condition as specificity)
 ```
 % /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/run_DE_analysis.pl  --matrix RSEM.gene.counts.matrix --method edgeR --samples_file samples_file_slit
 % /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/TissueEnrichment/DE_results_to_pairwise_summary.pl  ../RSEM.gene.TMM.EXPR.matrix.avg_reps.byLog.matrix ./. > DE_pairwise_summary.txt
