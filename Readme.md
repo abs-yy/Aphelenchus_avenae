@@ -5,6 +5,10 @@
 - The C-value of A. avenae is [0.04pg](http://www.genomesize.com/result_species.php?id=5818), corresponding to 39.12Mbp.
 
 # Method
+## Software installation
+- Normally, I install by manual ./configure && make && make install, but I wanted to test anaconda
+- I created several envs (ie busco3, busco4, braker1, trinotate)
+
 ## Data Acquisition
 - Sequence data list
   - DNA-Seq data from [PRJNA236621](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA236621)
@@ -233,61 +237,51 @@
       /path/to/blobtools/blobtools view -i blob.blobDB.json -o blob
       /path/to/blobtools/blobtools plot -i blob.blobDB.json -o plot
     ```
-![Figure](images/plot.blob.blobDB.json.bestsum.phylum.p8.span.100.blobplot.bam0.png)
+    ![Figure](images/plot.blob.blobDB.json.bestsum.phylum.p8.span.100.blobplot.bam0.png)
   - We see low non-metazoan contigs, so we presumed that there were low levels of contamination.
-- Validation by coverage
-  - Use Qualimap v2.2 for visualization
-    ```
-      /path/to/bwa index final.genome.scf.fasta
-      /path/to/bwa mem final.genome.scf.fasta SRR1180010.1.sra_1.fastq SRR1180010.1.sra_2.fastq -t 24  > SRR1180010.mem.sam
-      /path/to/samtools view -@ 24 -bS SRR1180010.mem.sam > SRR1180010.mem.bam
-      /path/to/samtools sort -@ 24 SRR1180010.mem.bam SRR1180010.mem.sorted
-      /path/to/samtools index SRR1180010.mem.sorted.bam
-      /path/to/qualimap_v2.2/qualimap bamqc -bam SRR1180010.mem.sorted.bam -outformat pdf --java-mem-size=16G
-    ```
 - Validation by BUSCO v4
   - We use BUSCO for genome completeness validation
   - BUSCO just had a major update (to v4), and there are inconsistancies with v3 results. Do not compare v3 results with v4
-    ```
-      # SPADES
-      % cat scaffolds.fasta_eukaryota/short_summary.specific.eukaryota_odb10.scaffolds.fasta_eukaryota.txt
-      	***** Results: *****
+```
+# SPADES
+% cat scaffolds.fasta_eukaryota/short_summary.specific.eukaryota_odb10.scaffolds.fasta_eukaryota.txt
+***** Results: *****
 
-        C:69.0%[S:65.9%,D:3.1%],F:19.6%,M:11.4%,n:255
-        176	Complete BUSCOs (C)
-        168	Complete and single-copy BUSCOs (S)
-        8	Complete and duplicated BUSCOs (D)
-        50	Fragmented BUSCOs (F)
-        29	Missing BUSCOs (M)
-        255	Total BUSCO groups searched
+C:69.0%[S:65.9%,D:3.1%],F:19.6%,M:11.4%,n:255
+176	Complete BUSCOs (C)
+168	Complete and single-copy BUSCOs (S)
+8	Complete and duplicated BUSCOs (D)
+50	Fragmented BUSCOs (F)
+29	Missing BUSCOs (M)
+255	Total BUSCO groups searched
 
-      # MaSuRCA
-      % cat final.genome.scf.fasta_eukaryote_genome/short_summary.specific.eukaryota_odb10.final.genome.scf.fasta_eukaryote_genome.txt
-    	***** Results: *****
-      C:80.4%[S:59.2%,D:21.2%],F:8.6%,M:11.0%,n:255
-      205	Complete BUSCOs (C)
-      151	Complete and single-copy BUSCOs (S)
-      54	Complete and duplicated BUSCOs (D)
-      22	Fragmented BUSCOs (F)
-      28	Missing BUSCOs (M)
-      255	Total BUSCO groups searched
-    ```
+# MaSuRCA
+% cat final.genome.scf.fasta_eukaryote_genome/short_summary.specific.eukaryota_odb10.final.genome.scf.fasta_eukaryote_genome.txt
+***** Results: *****
+C:80.4%[S:59.2%,D:21.2%],F:8.6%,M:11.0%,n:255
+205	Complete BUSCOs (C)
+151	Complete and single-copy BUSCOs (S)
+54	Complete and duplicated BUSCOs (D)
+22	Fragmented BUSCOs (F)
+28	Missing BUSCOs (M)
+255	Total BUSCO groups searched
+```
   - The MaSuRCA assembly has higher completeness scores (little higher Duplicated BUSCOs,,,)
   
 - Looking for a gene that I wanted to find
   - Anhydrin-1 from A. avenae (https://www.ebi.ac.uk/ena/data/view/AAQ20894)
-    ```
-    % cat anhydrin.fna
-    >ENA|AAQ20894|AAQ20894.1 Aphelenchus avenae anhydrin-1 : Location:1..261
-    ATGCCACCGATCGCTACCCGTCGGGGACAGTACGAGCCGAAAGTACAGCAAGCAAAGCTG
-    TCGCCGGACACGATTCCTCTCAATCCTGCCGATAAGACCAAGGATCCCCTGGCTCGAGCG
-    GACTCTCTTCATCATCACGTCGAAAGTGACTCGCAGGAAGACGACAAGGCGGCGGAAGAA
-    CCCCCTCTGAGCCGTAAGAGATGGCAGAACCGCACGTTCCGGCGCAAGGGACGACGTCAG
-    GCGCCGTACAAGCATAAATAA
-    % formatdb -i final.genome.scf.fasta -p F
-    % blastall -p blastn -i anhydrin.fna -d final.genome.scf.fasta -m 8 -a 32 -e 1e-15 -o anhydrin.fna.blastn.AAVENgenome.1e-15
-    # empty output
-    ```
+```
+% cat anhydrin.fna
+>ENA|AAQ20894|AAQ20894.1 Aphelenchus avenae anhydrin-1 : Location:1..261
+ATGCCACCGATCGCTACCCGTCGGGGACAGTACGAGCCGAAAGTACAGCAAGCAAAGCTG
+TCGCCGGACACGATTCCTCTCAATCCTGCCGATAAGACCAAGGATCCCCTGGCTCGAGCG
+GACTCTCTTCATCATCACGTCGAAAGTGACTCGCAGGAAGACGACAAGGCGGCGGAAGAA
+CCCCCTCTGAGCCGTAAGAGATGGCAGAACCGCACGTTCCGGCGCAAGGGACGACGTCAG
+GCGCCGTACAAGCATAAATAA
+% formatdb -i final.genome.scf.fasta -p F
+% blastall -p blastn -i anhydrin.fna -d final.genome.scf.fasta -m 8 -a 32 -e 1e-15 -o anhydrin.fna.blastn.AAVENgenome.1e-15
+# empty output
+```
   - Anhydrin-1 is missing in the genome....?
     1. The gene is missing in this genome
     1. The sequenced strain is not the same one as used in the study that identified Anhydrin-1
@@ -295,29 +289,29 @@
 
 ## Transcriptome assembly using data from the same lab that sequenced the DNA-Seq data
 - I had a old version of [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) installed v2.4.0
-  ```
-  /path/to/trinityrnaseq-Trinity-v2.4.0/Trinity  --seqType fq --max_memory 200G --left SRR1174913_1.fastq,SRR1175676_1.fastq,SRR1175692_1.fastq,SRR1175695_1.fastq,SRR1175696_1.fastq,SRR1175697_1.fastq,SRR1175706_1.fastq,SRR1175707_1.fastq,SRR1175708_1.fastq,SRR1175729_1.fastq,SRR1175731_1.fastq,SRR1175736_1.fastq,SRR1175737_1.fastq,SRR1175739_1.fastq,SRR1175740_1.fastq --right SRR1174913_2.fastq,SRR1175676_2.fastq,SRR1175692_2.fastq,SRR1175695_2.fastq,SRR1175696_2.fastq,SRR1175697_2.fastq,SRR1175706_2.fastq,SRR1175707_2.fastq,SRR1175708_2.fastq,SRR1175729_2.fastq,SRR1175731_2.fastq,SRR1175736_2.fastq,SRR1175737_2.fastq,SRR1175739_2.fastq,SRR1175740_2.fastq --CPU 32
-  ```
+```
+/path/to/trinityrnaseq-Trinity-v2.4.0/Trinity  --seqType fq --max_memory 200G --left SRR1174913_1.fastq,SRR1175676_1.fastq,SRR1175692_1.fastq,SRR1175695_1.fastq,SRR1175696_1.fastq,SRR1175697_1.fastq,SRR1175706_1.fastq,SRR1175707_1.fastq,SRR1175708_1.fastq,SRR1175729_1.fastq,SRR1175731_1.fastq,SRR1175736_1.fastq,SRR1175737_1.fastq,SRR1175739_1.fastq,SRR1175740_1.fastq --right SRR1174913_2.fastq,SRR1175676_2.fastq,SRR1175692_2.fastq,SRR1175695_2.fastq,SRR1175696_2.fastq,SRR1175697_2.fastq,SRR1175706_2.fastq,SRR1175707_2.fastq,SRR1175708_2.fastq,SRR1175729_2.fastq,SRR1175731_2.fastq,SRR1175736_2.fastq,SRR1175737_2.fastq,SRR1175739_2.fastq,SRR1175740_2.fastq --CPU 32
+```
 - But I also tried assembly with the newest [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) v2.9.1
-  ```
-  /path/to/trinityrnaseq-v2.9.1/Trinity   --seqType fq --max_memory 200G --include_supertranscripts --CPU 64 --left SRR1174913_1.fastq,SRR1175676_1.fastq,SRR1175692_1.fastq,SRR1175695_1.fastq,SRR1175696_1.fastq,SRR1175697_1.fastq,SRR1175706_1.fastq,SRR1175707_1.fastq,SRR1175708_1.fastq,SRR1175729_1.fastq,SRR1175731_1.fastq,SRR1175736_1.fastq,SRR1175737_1.fastq,SRR1175739_1.fastq,SRR1175740_1.fastq --right SRR1174913_2.fastq,SRR1175676_2.fastq,SRR1175692_2.fastq,SRR1175695_2.fastq,SRR1175696_2.fastq,SRR1175697_2.fastq,SRR1175706_2.fastq,SRR1175707_2.fastq,SRR1175708_2.fastq,SRR1175729_2.fastq,SRR1175731_2.fastq,SRR1175736_2.fastq,SRR1175737_2.fastq,SRR1175739_2.fastq,SRR1175740_2.fastq
-  ```
+```
+/path/to/trinityrnaseq-v2.9.1/Trinity   --seqType fq --max_memory 200G --include_supertranscripts --CPU 64 --left SRR1174913_1.fastq,SRR1175676_1.fastq,SRR1175692_1.fastq,SRR1175695_1.fastq,SRR1175696_1.fastq,SRR1175697_1.fastq,SRR1175706_1.fastq,SRR1175707_1.fastq,SRR1175708_1.fastq,SRR1175729_1.fastq,SRR1175731_1.fastq,SRR1175736_1.fastq,SRR1175737_1.fastq,SRR1175739_1.fastq,SRR1175740_1.fastq --right SRR1174913_2.fastq,SRR1175676_2.fastq,SRR1175692_2.fastq,SRR1175695_2.fastq,SRR1175696_2.fastq,SRR1175697_2.fastq,SRR1175706_2.fastq,SRR1175707_2.fastq,SRR1175708_2.fastq,SRR1175729_2.fastq,SRR1175731_2.fastq,SRR1175736_2.fastq,SRR1175737_2.fastq,SRR1175739_2.fastq,SRR1175740_2.fastq
+```
 - Of course it takes so much time, how about a faster assembler [Bridger](https://github.com/fmaguire/Bridger_Assembler)??
   - Too much reads for one assembly (983,115,852), so I subsampled to 10M reads for \_1 and \_2.
-    ```
-    cat *_1.fastq > left.fastq
-    cat *_2.fastq > right.fastq
-    seqtk sample -s100 left.fastq > left.sub.fastq
-    seqtk sample -s100 right.fastq > right.sub.fastq
+```
+cat *_1.fastq > left.fastq
+cat *_2.fastq > right.fastq
+seqtk sample -s100 left.fastq > left.sub.fastq
+seqtk sample -s100 right.fastq > right.sub.fastq
 
-    /path/to/Bridger_r2014-12-01/Bridger.pl --seqType fq --left left.sub.fq --right right.sub.fq --CPU 64
-    ```
+/path/to/Bridger_r2014-12-01/Bridger.pl --seqType fq --left left.sub.fq --right right.sub.fq --CPU 64
+```
     - I wanted to construct [Supertranscripts](https://github.com/trinityrnaseq/trinityrnaseq/wiki/SuperTranscripts), so I used [Lace](https://github.com/Oshlack/Lace/wiki/Installation)
-      ```
-      wget https://github.com/Oshlack/Lace/releases/download/v1.13/Lace-1.13.tar.gz
-      grep ">" Bridger.fasta | cut -d " " -f 1 | perl -ne 'chomp; s/>//; $a=(split /\_/)[0]; print $_."\t".$a."\n"' > Bridger.fasta.i2g
-      python Lace-1.13/Lace.py --core 32 -t  Bridger.fasta Bridger.fasta.i2g
-      ```
+```
+wget https://github.com/Oshlack/Lace/releases/download/v1.13/Lace-1.13.tar.gz
+grep ">" Bridger.fasta | cut -d " " -f 1 | perl -ne 'chomp; s/>//; $a=(split /\_/)[0]; print $_."\t".$a."\n"' > Bridger.fasta.i2g
+python Lace-1.13/Lace.py --core 32 -t  Bridger.fasta Bridger.fasta.i2g
+```
       - busco v4 stats : C:92.9%[S:92.5%,D:0.4%],F:3.9%,M:3.2%,n:255 
       - doesnt look that good. Throw this away
 - Comparison of the three assemblies
