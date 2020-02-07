@@ -481,9 +481,9 @@ SRR1175740	RH00-3	/path/to/SRR1175740_1.fastq	/path/to/SRR1175740_2.fastq
 % /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/replicates_to_sample_averages_matrix.pl --matrix ./../RSEM.gene.TMM.EXPR.matrix --samples_file ../samples_file_slit --avg_log_val
 ```
   - Correlation heatmap
-    - ![Figure](images/diffExpr.P0.05_C2.matrix.log2.centered.sample_cor_matrix.pdf)
+    - ![Figure](images/diffExpr.P0.05_C2.matrix.log2.centered.sample_cor_matrix.png)
   - Sample heatmap
-    - ![Figure](images/diffExpr.P0.05_C2.matrix.log2.centered.genes_vs_samples_heatmap.pdf)
+    - ![Figure](images/diffExpr.P0.05_C2.matrix.log2.centered.genes_vs_samples_heatmap.png)
   - DESeq2
 ```
 % /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/run_DE_analysis.pl  --matrix RSEM.gene.counts.matrix --method DESeq2 --samples_file samples_file_slit
@@ -491,7 +491,7 @@ SRR1175740	RH00-3	/path/to/SRR1175740_1.fastq	/path/to/SRR1175740_2.fastq
 ```
   - Custering
     - `/path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/define_clusters_by_cutting_tree.pl  -R ./diffExpr.P0.05_C2.matrix.RData --Ptree 30`
-    - ![Figure](images/my_cluster_plots.pdf)
+    - [Clustering result](images/my_cluster_plots.pdf)
   - edgeR (Trying tissue specificity protocol, RH condition as specificity)
 ```
 % /path/to/trinityrnaseq-v2.9.1/Analysis/DifferentialExpression/run_DE_analysis.pl  --matrix RSEM.gene.counts.matrix --method edgeR --samples_file samples_file_slit
