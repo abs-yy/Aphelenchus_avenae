@@ -637,3 +637,8 @@ SRR1175740.hisat2.sorted.bam.stat	22762473 + 0 mapped (87.27% : N/A)
 ```
 /path/to/BRAKER-2.1.4/scripts/braker.pl --genome final.genome.scf.fasta.masked --species AAVEN_3 --softmasking --gff3 --cores 32 --bam SRR1174913.hisat2.sorted.bam --bam SRR1175676.hisat2.sorted.bam --bam SRR1175692.hisat2.sorted.bam --bam SRR1175695.hisat2.sorted.bam --bam SRR1175696.hisat2.sorted.bam --bam SRR1175697.hisat2.sorted.bam --bam SRR1175706.hisat2.sorted.bam --bam SRR1175707.hisat2.sorted.bam --bam SRR1175708.hisat2.sorted.bam --bam SRR1175729.hisat2.sorted.bam --bam SRR1175731.hisat2.sorted.bam --bam SRR1175736.hisat2.sorted.bam --bam SRR1175737.hisat2.sorted.bam --bam SRR1175739.hisat2.sorted.bam --bam SRR1175740.hisat2.sorted.bam --verbosity=4  --useexisting
 ```
+  - 68261 genes (71404 isoforms) were predicted
+  - Busco v4 score is `C:86.3%[S:45.1%,D:41.2%],F:7.1%,M:6.6%,n:255`
+     - Rather low for a gene prediction, but the duplication is too high.
+  - 
+  
