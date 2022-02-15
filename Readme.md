@@ -1,3 +1,6 @@
+A paper has been published https://www.nature.com/articles/s42003-021-02778-8, but I'll just leave this repository.
+----------------
+
 # Introduction
 - I currently work on Tardigrade anhydrobiosis, and was looking for anhydrobiosis expression data of other organisms when I came across Aphelenchus avenae.
 - There were no genome/transcriptome assemblies and papers assosiated with this study, so I presumed that 1) no one is analyzing the data, or 2) The paper is under submission (sequenced at 2014, is taking a very long time..). I wanted to see gene conservations, so I tried to assemble the genome with recent methods.
